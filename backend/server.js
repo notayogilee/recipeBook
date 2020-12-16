@@ -1,6 +1,7 @@
 const express = require('express')
 const connectDB = require('./config/db')
 const dotenv = require('dotenv')
+const chalk = require('chalk')
 const users = require('./data/users')
 const recipes = require('./data/recipes')
 
@@ -39,5 +40,5 @@ app.get('/api/recipes/:id', (req, res) => {
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  console.log(chalk.cyan.underline(`Server running on port ${PORT}`))
 })
