@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Recipe = require('../models/recipeModel')
+const protect = require('../middleware/auth')
 
 // @route GET /api/recipes
 // @desc Get all recipes
@@ -26,4 +27,41 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+// @route POST /api/recipes
+// @desc Create a recipe
+// @desc Public - will be private
+router.post('/', protect, async (req, res) => {
+  const {
+    title,
+    description,
+    level,
+    imperialUnits,
+    prepTime,
+    cookTime,
+    isPrivate,
+    ingredients,
+    directions,
+    image,
+    tips
+  } = req.body
+
+  const recipe = new Recipe({
+    user: req.user._id,
+    title,
+    description,
+    level,
+    imperialUnits,
+    prepTime,
+    cookTime,
+    isPrivate,
+    ingredients,
+    directions,
+    image,
+    tips
+  })
+
+  const createdRecipe = await recipe.save()
+
+  res.status(201).send(recipe)
+})
 module.exports = router

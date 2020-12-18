@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  recipes: []
 })
 
 const User = mongoose.model('User', userSchema)
