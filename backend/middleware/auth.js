@@ -12,7 +12,6 @@ const protect = async (req, res, next) => {
       if (!token) {
         res.status(401).send('Not authorized. No token.')
         next()
-
       }
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
@@ -20,9 +19,10 @@ const protect = async (req, res, next) => {
       next()
     } catch (error) {
       console.error(error)
-      res.status(401).send('Not authorized. No token.')
+      res.status(401).send({ error: 'Not authorized. No token.' })
     }
-
+  } else {
+    res.status(401).send({ error: 'Not authorized. No token.' })
   }
 }
 

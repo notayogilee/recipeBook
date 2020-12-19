@@ -64,4 +64,24 @@ router.post('/', protect, async (req, res) => {
 
   res.status(201).send(recipe)
 })
+
+// @route DELETE /api/recipes/:id
+// @desc Delete a recipe
+// @access Private
+router.delete('/:id', protect, async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id)
+    if (!recipe) {
+      return res.status(404).send('Recipe not found')
+    }
+    if (recipe.user.toString() !== req.user._id.toString()) {
+      return res.status(401).send('You are not authorized to delete this recipe')
+    }
+    await recipe.remove()
+    res.send('Recipe deleted')
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Error: ', error)
+  }
+})
 module.exports = router
