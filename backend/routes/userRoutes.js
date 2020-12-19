@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
+const protect = require('../middleware/auth')
 
 // @route POST /api/users
 // @desc Register a user
@@ -27,36 +28,34 @@ router.post('/', async (req, res) => {
 
 // @route POST /api/users
 // @desc Login user
-// @access Public - will be private
+// @access Public
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
-
   const user = await User.findOne({ email })
-
   if (!user) {
     return res.status(400).send('Credentials do not match')
   }
 
   const comparePasswords = await bcrypt.compare(password, user.password)
-
   if (!comparePasswords) {
     return res.status(400).send('Credentials do not match')
   }
 
   const id = user._id
-
   const token = jwt.sign({ id }, process.env.JWT_SECRET)
-
   res.send({ user, token })
 })
 
 // @route PUT /api/users/:id
 // @desc Update a user profile
-// @access Public - will be private
-router.put('/:id', async (req, res) => {
+// @access Private
+router.put('/:id', protect, async (req, res) => {
   const user = await User.findById(req.params.id)
   if (!user) {
     return res.status(404).send('No user found')
+  }
+  if (user._id.toString() !== req.user.id) {
+    return res.status(401).send('You can only update your own account')
   }
   user.firstName = req.body.firstName || user.firstName
   user.lastName = req.body.lastName || user.lastName
@@ -71,18 +70,20 @@ router.put('/:id', async (req, res) => {
 
 // @route DELETE /api/users/:id
 // @desc Delete a user
-// @access Public - will be private
-router.delete('/:id', async (req, res) => {
+// @access Private
+router.delete('/:id', protect, async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  if (!user) { return res.status(404).send('User not found') }
+  if (user._id.toString() !== req.user.id) {
+    return res.status(401).send('You can only delete your own account')
+  }
+
   try {
-    const user = await User.findById(req.params.id)
-    if (!user) {
-      return res.status(404).send('User not found')
-    }
     await user.remove()
-    res.send('User deleted')
+    res.json({ message: 'User removed' })
   } catch (error) {
-    console.log(error)
-    res.status(500).send(error)
+    res.status(404).send('User not found')
   }
 })
 
