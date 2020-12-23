@@ -79,6 +79,22 @@ const userSchema = mongoose.Schema({
   ]
 })
 
+userSchema.statics.findRecipeInUsersRecipesAndRemove = async (recipeId) => {
+  const users = await User.find({})
+
+  users.forEach((user) => {
+
+    const recipeIndex = user.recipes.map((recipe, index) => {
+      if (recipe._id.toString() === recipeId) {
+        return index
+      }
+    })
+
+    user.recipes.splice(recipeIndex[0], 1)
+    user.save()
+  })
+}
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

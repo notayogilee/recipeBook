@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Recipe = require('../models/recipeModel')
 const protect = require('../middleware/auth')
+const owner = require('../middleware/owner')
 const User = require('../models/userModel')
 
 // @route GET /api/recipes
@@ -46,51 +47,58 @@ router.post('/', protect, async (req, res) => {
     tips
   } = req.body
 
-  const recipe = new Recipe({
-    user: req.user._id,
-    title,
-    description,
-    level,
-    imperialUnits,
-    prepTime,
-    cookTime,
-    isPrivate,
-    ingredients,
-    directions,
-    image,
-    tips
-  })
+  try {
+    const recipe = new Recipe({
+      user: req.user._id,
+      title,
+      description,
+      level,
+      imperialUnits,
+      prepTime,
+      cookTime,
+      isPrivate,
+      ingredients,
+      directions,
+      image,
+      tips
+    })
 
-  await recipe.save()
+    const recipeTitle = await Recipe.findOne({ title })
 
-  const user = await User.findById(req.user._id)
+    if (recipeTitle) {
+      return res.status(400).send('That title is taken, please change the title')
+    }
 
-  user.recipes = [...user.recipes, recipe]
+    await recipe.save()
 
-  await user.save()
+    const user = await User.findById(req.user._id)
 
-  res.status(201).send(`Added ${recipe.title} to recipes`)
+    user.recipes = [...user.recipes, recipe]
+
+    await user.save()
+
+    res.status(201).send(`Added ${recipe.title} to recipes`)
+  } catch (error) {
+    console.error(error)
+    throw new Error({ msg: error })
+  }
 })
 
 // @route PUT /api/recipes/:id
 // @desc Modify a recipe
 // @access Private
-router.put('/:id', protect, async (req, res) => {
+router.put('/:id', protect, owner, async (req, res) => {
 
 })
 
 // @route DELETE /api/recipes/:id
 // @desc Delete a recipe
 // @access Private
-router.delete('/:id', protect, async (req, res) => {
+router.delete('/:id', protect, owner, async (req, res) => {
 
   const recipe = await Recipe.findById(req.params.id)
-  if (!recipe) {
-    return res.status(404).send('Recipe not found')
-  }
-  if (recipe.user.toString() !== req.user._id.toString()) {
-    return res.status(401).send('You are not authorized to delete this recipe')
-  }
+
+  await User.findRecipeInUsersRecipesAndRemove(req.params.id)
   await recipe.remove()
   res.send('Recipe deleted')
 })
