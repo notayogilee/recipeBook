@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const protect = require('../middleware/auth')
+const Recipe = require('../models/recipeModel')
 
 // @route POST /api/users
 // @desc Register a user
@@ -46,11 +47,11 @@ router.post('/login', async (req, res) => {
   res.send({ user, token })
 })
 
-// @route PUT /api/users/:id
+// @route PUT /api/users/myProfile/edit
 // @desc Update a user profile
 // @access Private
-router.put('/:id', protect, async (req, res) => {
-  const user = await User.findById(req.params.id)
+router.put('/myProfile/edit', protect, async (req, res) => {
+  const user = await User.findById(req.user._id)
   if (!user) {
     return res.status(404).send('No user found')
   }
@@ -66,6 +67,49 @@ router.put('/:id', protect, async (req, res) => {
 
   const updatedUser = await user.save()
   res.send(updatedUser)
+})
+
+// @route GET /api/users/myRecipes
+// @desc Get all user recipes
+// @access private
+router.get('/myRecipes', protect, async (req, res) => {
+  const user = await User.findById(req.user._id)
+  res.send(user.recipes)
+})
+
+// @route PUT /api/users/myRecipes
+// @desc Add a recipe to users recipes
+// @access private
+router.put('/myRecipes', protect, async (req, res) => {
+  const user = await User.findById(req.user._id)
+
+  const recipeExists = user.recipes.find((recipe) => recipe._id.toString() === req.body._id)
+
+  if (recipeExists) {
+    return res.status(401).send('You already have this recipe in your recipes')
+  }
+
+  const recipe = await Recipe.findById(req.body._id)
+
+  user.recipes = [...user.recipes, recipe]
+  await user.save()
+  res.send(`Recipe ${recipe.title} was added to your recipes`)
+})
+
+// @route DELETE /api/users/myRecipes/:id
+// @desc Remove a recipe from users recipes
+// @access private
+router.delete('/myRecipes/:id', protect, async (req, res) => {
+  const user = await User.findById(req.user._id)
+  const index = user.recipes.findIndex((recipe) => recipe._id.toString() === req.params.id)
+
+  if (index !== -1) {
+    user.recipes.splice(index, 1)
+    user.save()
+    return res.send('Recipe deleted')
+  }
+
+  res.status(404).send('Recipe not found')
 })
 
 // @route DELETE /api/users/:id
@@ -95,12 +139,13 @@ router.get('/', async (req, res) => {
   res.send(users)
 })
 
-// @route GET /api/users/:id
+// @route GET /api/users/myProfile
 // @desc Get a user by id
 // @access Public - will be private
-router.get('/:id', async (req, res) => {
+router.get('/myProfile', protect, async (req, res) => {
+  const _id = req.user._id
   try {
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(_id)
 
     if (!user) {
       return res.send('No user found')

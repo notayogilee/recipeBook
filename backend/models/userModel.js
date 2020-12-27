@@ -83,15 +83,12 @@ userSchema.statics.findRecipeInUsersRecipesAndRemove = async (recipeId) => {
   const users = await User.find({})
 
   users.forEach((user) => {
+    const index = user.recipes.findIndex((recipe) => recipe._id.toString() === recipeId)
 
-    const recipeIndex = user.recipes.map((recipe, index) => {
-      if (recipe._id.toString() === recipeId) {
-        return index
-      }
-    })
-
-    user.recipes.splice(recipeIndex[0], 1)
-    user.save()
+    if (index !== -1) {
+      user.recipes.splice(index, 1)
+      user.save()
+    }
   })
 }
 
