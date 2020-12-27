@@ -79,7 +79,7 @@ router.get('/myRecipes', protect, async (req, res) => {
 
 // @route PUT /api/users/myRecipes
 // @desc Add a recipe to users recipes
-// @access private
+// @access Private
 router.put('/myRecipes', protect, async (req, res) => {
   const user = await User.findById(req.user._id)
 
@@ -88,7 +88,6 @@ router.put('/myRecipes', protect, async (req, res) => {
   if (recipeExists) {
     return res.status(401).send('You already have this recipe in your recipes')
   }
-
   const recipe = await Recipe.findById(req.body._id)
 
   user.recipes = [...user.recipes, recipe]
@@ -96,9 +95,41 @@ router.put('/myRecipes', protect, async (req, res) => {
   res.send(`Recipe ${recipe.title} was added to your recipes`)
 })
 
+// router PUT /api/users/myRecipes/:id
+// @desc Edit a recipe in my recipes
+// @access Private
+router.put('/myRecipes/:id', protect, async (req, res) => {
+  const user = await User.findById(req.user._id)
+  const recipe = user.recipes.find((recipe) => recipe._id.toString() === req.params.id)
+  console.log(recipe)
+  if (!recipe) {
+    return res.status(404).send('No recipe found')
+  }
+  try {
+    recipe.title = req.body.title || recipe.title
+    recipe.description = req.body.description || recipe.description
+    recipe.level = req.body.level || recipe.level
+    recipe.imperialUnits = req.body.imperialUnits || recipe.imperialUnits
+    recipe.prepTime = req.body.prepTime || recipe.prepTime
+    recipe.cookTime = req.body.cookTime || recipe.cookTime
+    recipe.isPrivate = req.body.isPrivate || recipe.isPrivate
+    recipe.ingredients = req.body.ingredients || recipe.ingredients
+    recipe.directions = req.body.directions || recipe.directions
+    recipe.image = req.body.image || recipe.image
+    recipe.tips = req.body.tips || recipe.tips
+
+    const updatedUserRecipe = await user.save()
+    res.send(updatedUserRecipe)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error)
+  }
+
+})
+
 // @route DELETE /api/users/myRecipes/:id
 // @desc Remove a recipe from users recipes
-// @access private
+// @access Private
 router.delete('/myRecipes/:id', protect, async (req, res) => {
   const user = await User.findById(req.user._id)
   const index = user.recipes.findIndex((recipe) => recipe._id.toString() === req.params.id)

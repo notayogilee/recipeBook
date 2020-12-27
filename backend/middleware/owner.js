@@ -7,7 +7,7 @@ const owner = async (req, res, next) => {
       return res.status(404).send('Recipe not found')
     }
     if (recipe.user.toString() !== req.user._id.toString()) {
-      return res.status(401).send('You are not authorized to delete this recipe')
+      return res.status(401).send('You are not authorized to modify or delete this recipe')
     }
     next()
   } catch (error) {

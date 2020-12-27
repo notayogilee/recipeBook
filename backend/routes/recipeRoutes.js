@@ -88,14 +88,32 @@ router.post('/', protect, async (req, res) => {
 // @desc Modify a recipe
 // @access Private
 router.put('/:id', protect, owner, async (req, res) => {
+  const recipe = await Recipe.findById(req.params.id)
 
+  if (!recipe) {
+    return res.status(404).send('No recipe found')
+  }
+
+  recipe.title = req.body.title || recipe.title
+  recipe.description = req.body.description || recipe.description
+  recipe.level = req.body.level || recipe.level
+  recipe.imperialUnits = req.body.imperialUnits || recipe.imperialUnits
+  recipe.prepTime = req.body.prepTime || recipe.prepTime
+  recipe.cookTime = req.body.cookTime || recipe.cookTime
+  recipe.isPrivate = req.body.isPrivate || recipe.isPrivate
+  recipe.ingredients = req.body.ingredients || recipe.ingredients
+  recipe.directions = req.body.directions || recipe.directions
+  recipe.image = req.body.image || recipe.image
+  recipe.tips = req.body.tips || recipe.tips
+
+  const updatedRecipe = await recipe.save()
+  res.send(updatedRecipe)
 })
 
 // @route DELETE /api/recipes/:id
 // @desc Delete a recipe
 // @access Private
 router.delete('/:id', protect, owner, async (req, res) => {
-
   const recipe = await Recipe.findById(req.params.id)
 
   await User.findRecipeInUsersRecipesAndRemove(req.params.id)
