@@ -139,6 +139,59 @@ router.post('/:id/reviews', protect, async (req, res) => {
   } else {
     res.status(404).send('Recipe not found')
   }
+})
+
+// @route PUT /api/recipes/:recipeId/reviews/:reviewId
+// @desc Edit a review
+// @access Private
+router.put('/:recipeId/reviews/:id', protect, async (req, res) => {
+  const recipe = await Recipe.findById(req.params.recipeId)
+
+  const review = recipe.reviews.find((review) => {
+    return review._id.toString() === req.params.id
+  })
+
+  if (req.user._id.toString() !== review.user.toString()) {
+    return res.status(401).send('You are not authorized to edit this review')
+  }
+
+  if (!review) return res.status(404).send('Review not found')
+
+  review.rating = req.body.rating || review.rating
+  review.comment = req.body.comment || review.comment
+
+  if (req.body.rating) {
+    recipe.rating = recipe.reviews.reduce((acc, item) => item.rating + acc, 0) / recipe.reviews.length
+  }
+
+  const updatedRecipe = await recipe.save()
+  res.send(updatedRecipe.reviews)
+})
+
+// @route DELETE /api/recipes/:recipeId/reviews/:reviewId
+// @desc delete a review
+// @access Private
+router.delete('/:recipeId/reviews/:reviewId', protect, async (req, res) => {
+  const recipe = await Recipe.findById(req.params.recipeId)
+  const review = recipe.reviews.find((review) => review._id.toString() === req.params.reviewId)
+  const index = recipe.reviews.findIndex((review) => review._id.toString() === req.params.reviewId)
+
+  if (req.user._id.toString() !== review.user.toString()) {
+    return res.status(401).send('You are not authorized to remove this review')
+  }
+
+  if (!review) return res.status(404).send('Review not found')
+
+  recipe.reviews.splice(index, 1)
+  recipe.numReviews = recipe.reviews.length
+  if (recipe.numReviews === 0) {
+    recipe.rating = 0
+  } else {
+    recipe.rating = recipe.reviews.reduce((acc, item) => item.rating + acc, 0) / recipe.reviews.length
+  }
+
+  await recipe.save()
+  res.send('Review removed')
 
 })
 
