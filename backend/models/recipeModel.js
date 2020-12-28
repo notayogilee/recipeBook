@@ -1,5 +1,17 @@
 const mongoose = require('mongoose')
 
+const reviewSchema = mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  rating: { type: Number, required: true },
+  comment: { type: String, required: true },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+  }
+})
+
 const recipeSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -33,7 +45,7 @@ const recipeSchema = mongoose.Schema({
     required: true
   },
   isPrivate: {
-    type: String,
+    type: Boolean,
     required: true,
     default: false
   },
@@ -54,6 +66,17 @@ const recipeSchema = mongoose.Schema({
   },
   tips: {
     type: String
+  },
+  reviews: [reviewSchema],
+  rating: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  numReviews: {
+    type: Number,
+    required: true,
+    default: 0
   }
 })
 

@@ -7,16 +7,20 @@ const User = require('../models/userModel')
 
 // @route GET /api/recipes
 // @desc Get all recipes
-// @access Public 
-router.get('/', async (req, res) => {
+// @access Private 
+router.get('/', protect, async (req, res) => {
   const recipes = await Recipe.find({})
-  res.send(recipes)
+
+  const publicRecipes = recipes.filter((recipe) => {
+    return recipe.isPrivate === false
+  })
+  res.send(publicRecipes)
 })
 
 // @route GET /api/recipes/:id
 // @desc Get recipe by id 
-// @access Public
-router.get('/:id', async (req, res) => {
+// @access Private
+router.get('/:id', protect, async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id)
     if (!recipe) {
@@ -63,12 +67,6 @@ router.post('/', protect, async (req, res) => {
       tips
     })
 
-    const recipeTitle = await Recipe.findOne({ title })
-
-    if (recipeTitle) {
-      return res.status(400).send('That title is taken, please change the title')
-    }
-
     await recipe.save()
 
     const user = await User.findById(req.user._id)
@@ -110,6 +108,40 @@ router.put('/:id', protect, owner, async (req, res) => {
   res.send(updatedRecipe)
 })
 
+// @route POST /api/recipes/:id/reviews
+// @desc Create a review for a recipe
+// @access Private
+router.post('/:id/reviews', protect, async (req, res) => {
+  const { rating, comment } = req.body
+  const recipe = await Recipe.findById(req.params.id)
+
+  if (recipe) {
+    const alreadyReviewed = recipe.reviews.find((recipe) => recipe.user._id.toString() === req.user._id.toString())
+
+    if (alreadyReviewed) {
+      return res.status(400).send('Product already reviewed')
+    }
+
+    const review = {
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      rating: Number(rating),
+      comment,
+      user: req.user._id
+    }
+
+    recipe.reviews.push(review)
+    recipe.numReviews = recipe.reviews.length
+    recipe.rating = recipe.reviews.reduce((acc, item) => item.rating + acc, 0) / recipe.reviews.length
+
+    await recipe.save()
+    res.status(201).send('Review added')
+  } else {
+    res.status(404).send('Recipe not found')
+  }
+
+})
+
 // @route DELETE /api/recipes/:id
 // @desc Delete a recipe
 // @access Private
@@ -120,4 +152,5 @@ router.delete('/:id', protect, owner, async (req, res) => {
   await recipe.remove()
   res.send('Recipe deleted')
 })
+
 module.exports = router
