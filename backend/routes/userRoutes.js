@@ -164,8 +164,8 @@ router.delete('/:id', protect, async (req, res) => {
 
 // @route GET /api/users
 // @desc Get all users
-// @access Public - will be private
-router.get('/', async (req, res) => {
+// @access Private
+router.get('/', protect, async (req, res) => {
   const users = await User.find({})
   res.send(users)
 })
