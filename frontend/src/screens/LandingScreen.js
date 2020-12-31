@@ -1,11 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
-import Hidden from '@material-ui/core/Hidden'
-import Button from '@material-ui/core/Button'
-import Paper from '@material-ui/core/Paper'
+import {
+  makeStyles,
+  createMuiTheme,
+  ThemeProvider
+} from '@material-ui/core/styles'
+import {
+  Container,
+  Typography,
+  Hidden,
+  Button,
+  Paper
+} from '@material-ui/core'
 import image from '../images/landing.jpg'
 
 const theme = createMuiTheme({
