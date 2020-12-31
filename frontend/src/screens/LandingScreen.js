@@ -9,9 +9,6 @@ import Paper from '@material-ui/core/Paper'
 import image from '../images/landing.jpg'
 
 const theme = createMuiTheme({
-  typography: {
-    fontFamily: 'Righteous'
-  },
   palette: {
     primary: {
       light: '#ffdd71',
@@ -73,7 +70,8 @@ const Landing = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: 'auto'
+                margin: 'auto',
+                fontFamily: 'Righteous'
               }}
             >
               Recipe Book
@@ -107,13 +105,13 @@ const Landing = () => {
                 background: '#ffab40'
               }}
             >
-              <Typography variant="h1" color="secondary">
+              <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
                 Share
               </Typography>
-              <Typography variant="h1" color="secondary">
+              <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
                 Some
               </Typography>
-              <Typography variant="h1" color="secondary">
+              <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
                 Magic
               </Typography>
 
