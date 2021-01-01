@@ -104,7 +104,7 @@ const recipes = [
   },
   {
     title: 'Gingerbread Cookies',
-    description: 'This is the BEST recipe for gingerbread cookies I have ever tasted. It looks complicated, but isn\'t. I have used this recipe for many years and always get compliments on it.',
+    description: 'This is the BEST recipe for gingerbread cookies I have ever tasted. It looks complicated, but isn\'t.',
     level: 'intermediate',
     imperialUnits: true,
     prepTime: '20 minutes',
