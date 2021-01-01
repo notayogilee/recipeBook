@@ -5,6 +5,7 @@ import dip from './images/dipSm.jpg'
 
 const recipes = [
   {
+    _id: 1,
     title: 'Bruchetta',
     description: 'A cold appetizer to be put on crackers or scoopable veggies.',
     level: 'beginner',
@@ -52,6 +53,7 @@ const recipes = [
     tips: 'Drain excess water from tomatoes.'
   },
   {
+    _id: 2,
     title: 'Turkey Wings',
     description: 'Move over chicken wings, these are juicy and bigger!',
     level: 'beginner',
@@ -103,6 +105,7 @@ const recipes = [
     tips: 'Let wings rest covered for 10 minutes once out of oven.'
   },
   {
+    _id: 3,
     title: 'Gingerbread Cookies',
     description: 'This is the BEST recipe for gingerbread cookies I have ever tasted. It looks complicated, but isn\'t.',
     level: 'intermediate',
@@ -177,6 +180,7 @@ const recipes = [
     image: gingerbread
   },
   {
+    _id: 4,
     title: 'Simple Artichoke Dip',
     description: 'Serve with sliced baguettes or pita chips.',
     level: 'beginner',

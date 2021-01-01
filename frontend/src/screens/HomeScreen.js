@@ -9,9 +9,12 @@ import {
   CardMedia,
   CardContent,
   CardActions,
-  IconButton
+  IconButton,
+  Modal,
+  Backdrop,
+  Fade
 } from '@material-ui/core'
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import { Favorite, ExpandMore } from '@material-ui/icons';
 
 // import axios from 'axios'
 
@@ -60,10 +63,22 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: '56.25%'
-  }
+  },
+  modal: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }))
 const HomeScreen = () => {
   const classes = useStyles()
+
   // const [recipes, setRecipes] = useState([])
 
   // useEffect(() => {
@@ -94,7 +109,7 @@ const HomeScreen = () => {
         <Box className={classes.root}>
 
           {recipes.map((recipe) => (
-            <Card className={classes.card} >
+            <Card className={classes.card} key={recipe._id} xs={12}>
               <CardHeader
                 title={recipe.title}
               />
@@ -109,15 +124,25 @@ const HomeScreen = () => {
               </CardContent>
               <CardActions
                 style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
                   position: 'absolute',
-                  bottom: '0'
+                  bottom: '0',
+                  width: '100%'
                 }}>
                 <IconButton>
-                  <FavoriteIcon />
+                  <Favorite />
+                </IconButton>
+                <IconButton>
+                  <ExpandMore
+                    color="secondary"
+                    fontSize="large"
+                  />
                 </IconButton>
               </CardActions>
             </Card>
           ))}
+
         </Box>
       </ThemeProvider>
     </>
