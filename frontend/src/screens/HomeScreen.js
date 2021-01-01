@@ -5,14 +5,12 @@ import {
   Card,
   CardHeader,
   Typography,
-  Box,
+  Grid,
+  Container,
   CardMedia,
   CardContent,
   CardActions,
   IconButton,
-  Modal,
-  Backdrop,
-  Fade
 } from '@material-ui/core'
 import { Favorite, ExpandMore } from '@material-ui/icons';
 
@@ -38,43 +36,23 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
-    flexBasis: '33%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: '5rem',
-    height: 'auto',
-    width: '100%',
-    overflowX: 'hidden',
     background: '#FCFFDB',
-    '& > *': {
-      margin: theme.spacing(1),
-      width: theme.spacing(2),
-      height: theme.spacing(2)
-    }
+    paddingBottom: '4rem',
+    width: '100%'
   },
   card: {
     display: 'flex',
     flexDirection: 'column',
-    width: '30%',
-    height: 500,
+    width: '100%',
+    height: 450,
     position: 'relative'
   },
   media: {
     height: 0,
     paddingTop: '56.25%'
-  },
-  modal: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
+  }
 }))
 const HomeScreen = () => {
   const classes = useStyles()
@@ -106,44 +84,47 @@ const HomeScreen = () => {
         >
           Recipes
       </Typography>
-        <Box className={classes.root}>
-
-          {recipes.map((recipe) => (
-            <Card className={classes.card} key={recipe._id} xs={12}>
-              <CardHeader
-                title={recipe.title}
-              />
-              <CardMedia
-                className={classes.media}
-                image={recipe.image}
-              />
-              <CardContent>
-                <Typography>
-                  {recipe.description}
-                </Typography>
-              </CardContent>
-              <CardActions
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  position: 'absolute',
-                  bottom: '0',
-                  width: '100%'
-                }}>
-                <IconButton>
-                  <Favorite />
-                </IconButton>
-                <IconButton>
-                  <ExpandMore
-                    color="secondary"
-                    fontSize="large"
+        <Container maxWidth="lg" className={classes.root}>
+          <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
+            {recipes.map((recipe) => (
+              <Grid item xs={8} md={6} lg={4}>
+                <Card className={classes.card} key={recipe._id} elevation={4}>
+                  <CardHeader
+                    title={recipe.title}
                   />
-                </IconButton>
-              </CardActions>
-            </Card>
-          ))}
+                  <CardMedia
+                    className={classes.media}
+                    image={recipe.image}
+                  />
+                  <CardContent>
+                    <Typography>
+                      {recipe.description}
+                    </Typography>
+                  </CardContent>
+                  <CardActions
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      position: 'absolute',
+                      bottom: '0',
+                      width: '100%'
+                    }}>
+                    <IconButton>
+                      <Favorite />
+                    </IconButton>
+                    <IconButton>
+                      <ExpandMore
+                        color="secondary"
+                        fontSize="large"
+                      />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
 
-        </Box>
+          </Grid>
+        </Container>
       </ThemeProvider>
     </>
   )
