@@ -15,6 +15,7 @@ import {
   CardContent,
   Typography,
   CardMedia,
+  Hidden
 } from '@material-ui/core'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -68,12 +69,13 @@ const RecipeScreen = ({ match }) => {
           <Box
             style={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-evenly",
               alignItems: "center",
               width: "100%",
               marginBottom: "1rem"
             }}
           >
+          <Hidden xsDown>
           <CardMedia
               component="img"
               src={recipe.image}
@@ -85,7 +87,7 @@ const RecipeScreen = ({ match }) => {
                 borderRadius: "50%"
               }}
             />
-            
+            </Hidden>
             <Typography
               variant="h1"
               component="div"
@@ -98,6 +100,7 @@ const RecipeScreen = ({ match }) => {
             >
               {recipe.title}
             </Typography>
+            <Hidden xsDown>
             <Link
               to="/recipes"
               style={{
@@ -111,8 +114,24 @@ const RecipeScreen = ({ match }) => {
                 Back
             </Fab>
             </Link>
+            </Hidden>
           </Box>
-
+          <Hidden smUp>
+            <Link
+              to="/recipes"
+              style={{
+                textDecoration: "none",
+                paddingBottom: "1rem"
+              }}>
+              <Fab
+                variant="extended"
+                color="secondary"
+              >
+                <ArrowBackIosIcon />
+                Back
+            </Fab>
+            </Link>
+            </Hidden>
           <Box
             style={{
               display: "flex",
@@ -154,7 +173,7 @@ const RecipeScreen = ({ match }) => {
                 Ingredients
              
               </Typography>
-              {recipe.ingredients && recipe.ingredients.map((ingredient) =>  <Ingredient ingredient={ingredient} />
+              {recipe.ingredients && recipe.ingredients.map((ingredient) =>  <Ingredient key={ingredient._id} ingredient={ingredient} />
               )}
             </Box>
           
