@@ -1,15 +1,22 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Ingredient from '../components/Ingredient'
 import {
   createMuiTheme,
   makeStyles,
   ThemeProvider
 } from '@material-ui/core/styles'
 import {
-  Button,
-  Container
+  Fab,
+  Container,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
 } from '@material-ui/core'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const theme = createMuiTheme({
   palette: {
@@ -31,7 +38,7 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
     background: '#FCFFDB',
     paddingBottom: '4rem',
@@ -57,23 +64,118 @@ const RecipeScreen = ({ match }) => {
   return (
     <ThemeProvider theme={theme}>
       <>
-        <Container className={classes.root}>
-          <Link
-            to="/recipes"
-            style={{ textDecoration: "none" }}>
-            <Button
-              variant="contained"
+        <Container maxWidth="lg" className={classes.root}>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: "1rem"
+            }}
+          >
+          <CardMedia
+              component="img"
+              src={recipe.image}
+              title={recipe.title}
+              alt={recipe.title}
+              style={{
+                height: "100px",
+                width: "100px",
+                borderRadius: "50%"
+              }}
+            />
+            
+            <Typography
+              variant="h1"
+              component="div"
+              color="primary"
+              style={{
+                fontFamily: "Righteous",
+                padding: "2rem",
+                textAlign: "center"
+              }}
+            >
+              {recipe.title}
+            </Typography>
+            <Link
+              to="/recipes"
+              style={{
+                textDecoration: "none"
+              }}>
+              <Fab
+                variant="extended"
+                color="secondary"
+              >
+                <ArrowBackIosIcon />
+                Back
+            </Fab>
+            </Link>
+          </Box>
+
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              width: "100%",
+              marginBottom: "1rem"
+            }}
+          >
+            <Typography
+              variant="h5"
+              component="div"
               color="secondary"
             >
-              Back
-    </Button>
-          </Link>
+              Level: {recipe.level}
+            </Typography>
+            <Typography
+              variant="h5"
+              component="div"
+              color="secondary"
+            >
+              Prep Time: {recipe.prepTime}
+            </Typography>
+            <Typography
+              variant="h5"
+              component="div"
+              color="secondary"
+            >
+              Cook Time: {recipe.cookTime}
+            </Typography>
+          </Box>
+          <Card>
+            <CardContent>
+            <Box>
+           
+              <Typography
+                variant="h4"
+                color="secondary"
+              >
+                Ingredients
+             
+              </Typography>
+              {recipe.ingredients && recipe.ingredients.map((ingredient) =>  <Ingredient ingredient={ingredient} />
+              )}
+            </Box>
+          
 
-          {recipe.title}
+              <Typography
+                variant="h4"
+                color="secondary"
+              >
+                Directions
+            </Typography>
+              <Typography
+                variant="h6"
+                color="secondary"
+              >
+                <strong>{recipe.directions}</strong>
+              </Typography>
+            </CardContent>
+          </Card>
         </Container>
       </>
     </ThemeProvider>
-
   )
 }
 
