@@ -43,7 +43,8 @@ const recipes = [
       },
     ],
     directions: "Mix everything in a bowl and let sit for an hour in the fridge. Serve on toasted baguette.",
-    tips: 'Drain excess water from tomatoes.'
+    tips: 'Drain excess water from tomatoes.',
+    image: '/images/bruchettaSm.jpg'
   },
   {
     title: 'Turkey Wings',
@@ -93,6 +94,7 @@ const recipes = [
       },
     ],
     directions: "Mix everything except turkey wings in a bowl. Spread mixure over turkey wings. Put wings in a baking dish and cook at 425 F for 1 hour.",
+    image: '/images/wingsSm.jpg',
     tips: 'Let wings rest covered for 10 minutes once out of oven.'
   },
   {
@@ -166,7 +168,8 @@ const recipes = [
         unitOfMeasurement: "teaspoon",
       },
     ],
-    directions: "Sift together the flour, baking powder, ginger, nutmeg, cloves, and cinnamon; set aside. In a medium bowl, mix together the shortening, molasses, brown sugar, water, egg, and vanilla until smooth. Gradually stir in the dry ingredients, until they are completely absorbed. Divide dough into 3 pieces, pat down to 1 1/2 inch thickness, wrap in plastic wrap, and refrigerate for at least 3 hours. Preheat oven to 350 degrees F (175 degrees C). On a lightly floured surface, roll the dough out to 1/4 inch thickness. Cut into desired shapes with cookie cutters. Place cookies 1 inch apart onto an ungreased cookie sheet. Bake for 10 to 12 minutes in the preheated oven. When the cookies are done, they will look dry, but still be soft to the touch. Remove from the baking sheet to cool on wire racks. When cool, the cookies can be frosted with the icing of your choice."
+    directions: "Sift together the flour, baking powder, ginger, nutmeg, cloves, and cinnamon; set aside. In a medium bowl, mix together the shortening, molasses, brown sugar, water, egg, and vanilla until smooth. Gradually stir in the dry ingredients, until they are completely absorbed. Divide dough into 3 pieces, pat down to 1 1/2 inch thickness, wrap in plastic wrap, and refrigerate for at least 3 hours. Preheat oven to 350 degrees F (175 degrees C). On a lightly floured surface, roll the dough out to 1/4 inch thickness. Cut into desired shapes with cookie cutters. Place cookies 1 inch apart onto an ungreased cookie sheet. Bake for 10 to 12 minutes in the preheated oven. When the cookies are done, they will look dry, but still be soft to the touch. Remove from the baking sheet to cool on wire racks. When cool, the cookies can be frosted with the icing of your choice.",
+    image: '../images/gingerbreadSm.jpg',
   },
   {
     title: 'Simple Artichoke Dip',
@@ -210,7 +213,8 @@ const recipes = [
         unitOfMeasurement: "teaspoon"
       },
     ],
-    directions: "Mix everything in a bowl and let sit for an hour in the fridge. Serve on toasted baguette."
+    directions: "Mix everything in a bowl and let sit for an hour in the fridge. Serve on toasted baguette.",
+    image: '/images/dipSm.jpg',
   }
 ]
 

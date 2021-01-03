@@ -8,7 +8,7 @@ const User = require('../models/userModel')
 // @route GET /api/recipes
 // @desc Get all recipes
 // @access Private 
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
   const recipes = await Recipe.find({})
 
   const publicRecipes = recipes.filter((recipe) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import recipes from '../recipes'
+// import recipes from '../recipes'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import {
   Card,
@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import { Favorite, ExpandMore } from '@material-ui/icons';
 
-// import axios from 'axios'
+import axios from 'axios'
 
 const theme = createMuiTheme({
   palette: {
@@ -40,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     background: '#FCFFDB',
     paddingBottom: '4rem',
-    width: '100%'
+    width: '100%',
+    minHeight: '80vh'
   },
   card: {
     display: 'flex',
@@ -50,24 +51,25 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative'
   },
   media: {
-    height: 0,
-    paddingTop: '56.25%'
+    height: '50%',
+    top: 0,
+    // paddingTop: '56.25%'
   }
 }))
 const HomeScreen = () => {
   const classes = useStyles()
 
-  // const [recipes, setRecipes] = useState([])
+  const [recipes, setRecipes] = useState([])
 
-  // useEffect(() => {
-  //   const fetchRecipes = async () => {
-  //     const { data } = await axios.get('/api/recipes')
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      const { data } = await axios.get('/api/recipes')
 
-  //     setRecipes(data)
-  //   }
-  //   fetchRecipes()
-  // }, [recipes])
-
+      setRecipes(data)
+    }
+    fetchRecipes()
+  }, [])
+  console.log(recipes)
 
   return (
     <>
@@ -87,14 +89,15 @@ const HomeScreen = () => {
         <Container maxWidth="lg" className={classes.root}>
           <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
             {recipes.map((recipe) => (
-              <Grid item xs={8} md={6} lg={4}>
-                <Card className={classes.card} key={recipe._id} elevation={4}>
+              <Grid item xs={8} md={6} lg={4} key={recipe._id}>
+                <Card className={classes.card} elevation={4}>
                   <CardHeader
                     title={recipe.title}
                   />
                   <CardMedia
                     className={classes.media}
-                    image={recipe.image}
+                    component="img"
+                    src={recipe.image}
                   />
                   <CardContent>
                     <Typography>

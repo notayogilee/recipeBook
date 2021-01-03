@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/register" component={RegisterScreen} />
         <Route path="/login" component={LoginScreen} />
         <Route path="/home" component={HomeScreen} />
-        <Route path="/recipe" component={RecipeScreen} />
+        <Route path="/recipe/:id" component={RecipeScreen} />
       </>
     </Router>
   );
