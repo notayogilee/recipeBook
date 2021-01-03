@@ -8,7 +8,7 @@ const User = require('../models/userModel')
 // @route GET /api/recipes
 // @desc Get all recipes
 // @access Private 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res) => { //need to set back to private
   const recipes = await Recipe.find({})
 
   const publicRecipes = recipes.filter((recipe) => {
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 // @route GET /api/recipes/:id
 // @desc Get recipe by id 
 // @access Private
-router.get('/:id', protect, async (req, res) => {
+router.get('/:id', async (req, res) => { // need to set back to private
   try {
     const recipe = await Recipe.findById(req.params.id)
     if (!recipe) {

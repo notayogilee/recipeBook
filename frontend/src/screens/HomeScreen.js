@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 // import recipes from '../recipes'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import {
@@ -69,7 +70,6 @@ const HomeScreen = () => {
     }
     fetchRecipes()
   }, [])
-  console.log(recipes)
 
   return (
     <>
@@ -115,12 +115,14 @@ const HomeScreen = () => {
                     <IconButton>
                       <Favorite />
                     </IconButton>
-                    <IconButton>
-                      <ExpandMore
-                        color="secondary"
-                        fontSize="large"
-                      />
-                    </IconButton>
+                    <Link to={`/recipe/${recipe._id}`}>
+                      <IconButton>
+                        <ExpandMore
+                          color="secondary"
+                          fontSize="large"
+                        />
+                      </IconButton>
+                    </Link>
                   </CardActions>
                 </Card>
               </Grid>
