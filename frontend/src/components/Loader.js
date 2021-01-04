@@ -4,11 +4,12 @@ import { CircularProgress } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
+    height: "100vh",
+    width: "100%"
+
   },
   spinner: {
-    width: "100px",
-    height: "100px",
     margin: "auto",
     display: "block",
     color: "#8d6e63"
@@ -20,7 +21,7 @@ const Loader = () => {
 
   return (
     <div className={classes.root}>
-      <CircularProgress className={classes.spinner} />
+      <CircularProgress size="100px" className={classes.spinner} />
     </div>
   )
 }

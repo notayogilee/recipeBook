@@ -1,5 +1,5 @@
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, {useEffect } from 'react'
+import { useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
 import Ingredient from '../components/Ingredient'
 import {
@@ -18,6 +18,9 @@ import {
   Hidden
 } from '@material-ui/core'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import {listRecipeDetails} from '../actions/recipeActions'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
 const theme = createMuiTheme({
   palette: {
@@ -50,21 +53,20 @@ const useStyles = makeStyles((theme) => ({
 
 
 const RecipeScreen = ({ match }) => {
+const dispatch = useDispatch()
+const recipeDetails = useSelector(state => state.recipeDetails)
+const {loading, error, recipe} = recipeDetails
+
   const classes = useStyles()
-  const [recipe, setRecipe] = useState({})
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      const { data } = await axios.get(`/api/recipes/${match.params.id}`)
-
-      setRecipe(data)
-    }
-    fetchRecipe()
-  }, [])
+   dispatch(listRecipeDetails(match.params.id))
+  }, [dispatch, match])
 
   return (
     <ThemeProvider theme={theme}>
       <>
+        {loading ? <Loader /> : error ? <Message severity="error" message={error} /> : (
         <Container maxWidth="lg" className={classes.root}>
           <Box
             style={{
@@ -192,7 +194,9 @@ const RecipeScreen = ({ match }) => {
               </Typography>
             </CardContent>
           </Card>
+         
         </Container>
+        )}
       </>
     </ThemeProvider>
   )

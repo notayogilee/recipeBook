@@ -4,7 +4,6 @@ import { Collapse, IconButton, Container } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { Alert } from '@material-ui/lab'
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
