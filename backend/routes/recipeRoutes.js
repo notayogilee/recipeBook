@@ -9,11 +9,13 @@ const User = require('../models/userModel')
 // @desc Get all recipes
 // @access Private 
 router.get('/', async (req, res) => { //need to set back to private
+
   const recipes = await Recipe.find({})
 
   const publicRecipes = recipes.filter((recipe) => {
     return recipe.isPrivate === false
   })
+
   res.send(publicRecipes)
 })
 

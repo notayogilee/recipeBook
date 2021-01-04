@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { listRecipes } from '../actions/recipeActions'
 import { Link } from 'react-router-dom'
-// import recipes from '../recipes'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import {
   Card,
@@ -14,8 +15,6 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { Favorite, ExpandMore } from '@material-ui/icons';
-
-import axios from 'axios'
 
 const theme = createMuiTheme({
   palette: {
@@ -58,18 +57,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 const HomeScreen = () => {
+  const dispatch = useDispatch()
+  const recipeList = useSelector(state => state.recipeList)
+  const { loading, error, recipes } = recipeList
+
   const classes = useStyles()
 
-  const [recipes, setRecipes] = useState([])
-
   useEffect(() => {
-    const fetchRecipes = async () => {
-      const { data } = await axios.get('/api/recipes')
+    dispatch(listRecipes())
+  }, [dispatch])
 
-      setRecipes(data)
-    }
-    fetchRecipes()
-  }, [])
+  console.log(error)
 
   return (
     <>
@@ -86,50 +84,55 @@ const HomeScreen = () => {
         >
           Recipes
       </Typography>
-        <Container maxWidth="lg" className={classes.root}>
-          <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
-            {recipes.map((recipe) => (
-              <Grid item xs={8} md={6} lg={4} key={recipe._id}>
-                <Card className={classes.card} elevation={4}>
-                  <CardHeader
-                    title={recipe.title}
-                  />
-                  <CardMedia
-                    className={classes.media}
-                    component="img"
-                    src={recipe.image}
-                  />
-                  <CardContent>
-                    <Typography>
-                      {recipe.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      position: 'absolute',
-                      bottom: '0',
-                      width: '100%'
-                    }}>
-                    <IconButton>
-                      <Favorite />
-                    </IconButton>
-                    <Link to={`/recipe/${recipe._id}`}>
-                      <IconButton>
-                        <ExpandMore
-                          color="secondary"
-                          fontSize="large"
-                        />
-                      </IconButton>
-                    </Link>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+        {loading
+          ? <h2>Loading...</h2>
+          : error
+            ? <h3>{error}</h3>
+            : <Container maxWidth="lg" className={classes.root}>
+              <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
+                {recipes.map((recipe) => (
+                  <Grid item xs={8} md={6} lg={4} key={recipe._id}>
+                    <Card className={classes.card} elevation={4}>
+                      <CardHeader
+                        title={recipe.title}
+                      />
+                      <CardMedia
+                        className={classes.media}
+                        component="img"
+                        src={recipe.image}
+                      />
+                      <CardContent>
+                        <Typography>
+                          {recipe.description}
+                        </Typography>
+                      </CardContent>
+                      <CardActions
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          position: 'absolute',
+                          bottom: '0',
+                          width: '100%'
+                        }}>
+                        <IconButton>
+                          <Favorite />
+                        </IconButton>
+                        <Link to={`/recipe/${recipe._id}`}>
+                          <IconButton>
+                            <ExpandMore
+                              color="secondary"
+                              fontSize="large"
+                            />
+                          </IconButton>
+                        </Link>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))}
 
-          </Grid>
-        </Container>
+              </Grid>
+            </Container>
+        }
       </ThemeProvider>
     </>
   )

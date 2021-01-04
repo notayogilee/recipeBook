@@ -6,6 +6,7 @@ const User = require('./models/userModel')
 const Recipe = require('./models/recipeModel')
 const userRoutes = require('./routes/userRoutes')
 const recipeRoutes = require('./routes/recipeRoutes')
+const { errorHandler, notFound } = require('./middleware/errorMiddleware')
 
 dotenv.config()
 
@@ -17,6 +18,9 @@ app.use(express.json({ extended: false }))
 
 app.use('/api/users', userRoutes)
 app.use('/api/recipes', recipeRoutes)
+
+app.use(notFound)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
