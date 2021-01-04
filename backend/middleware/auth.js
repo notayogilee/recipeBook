@@ -7,14 +7,13 @@ const protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     const user = await User.findById(decoded.id)
     if (!user) {
-      res.status(401)
-      throw new Error('Not authorized')
+      return res.status(401).send({ message: "Please login or register to view recipes" })
     }
     req.token = token
     req.user = user
     next()
   } catch (error) {
-    res.status(401).send({ message: "Please authenticate" })
+    res.status(401).send({ message: "Please login or register to view recipes" })
   }
 }
 

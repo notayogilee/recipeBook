@@ -1,4 +1,5 @@
 const express = require('express')
+
 const router = express.Router()
 const Recipe = require('../models/recipeModel')
 const protect = require('../middleware/auth')
@@ -8,15 +9,18 @@ const User = require('../models/userModel')
 // @route GET /api/recipes
 // @desc Get all recipes
 // @access Private 
-router.get('/', async (req, res) => { //need to set back to private
+router.get('/', protect, async (req, res) => { //need to set back to private
+  try {
+    const recipes = await Recipe.find({})
 
-  const recipes = await Recipe.find({})
-
-  const publicRecipes = recipes.filter((recipe) => {
-    return recipe.isPrivate === false
-  })
-
-  res.send(publicRecipes)
+    const publicRecipes = recipes.filter((recipe) => {
+      return recipe.isPrivate === false
+    })
+    res.send(publicRecipes)
+  } catch (error) {
+    console.log(chalk.red.bold(error))
+    res.status(500).send(`Error: ${error}`)
+  }
 })
 
 // @route GET /api/recipes/:id

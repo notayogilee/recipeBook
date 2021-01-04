@@ -15,6 +15,8 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { Favorite, ExpandMore } from '@material-ui/icons';
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
 const theme = createMuiTheme({
   palette: {
@@ -67,8 +69,6 @@ const HomeScreen = () => {
     dispatch(listRecipes())
   }, [dispatch])
 
-  console.log(error)
-
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -85,9 +85,9 @@ const HomeScreen = () => {
           Recipes
       </Typography>
         {loading
-          ? <h2>Loading...</h2>
+          ? <Loader />
           : error
-            ? <h3>{error}</h3>
+            ? <Message severity="error" message={error} />
             : <Container maxWidth="lg" className={classes.root}>
               <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
                 {recipes.map((recipe) => (
