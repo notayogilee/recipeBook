@@ -34,12 +34,12 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body
   const user = await User.findOne({ email })
   if (!user) {
-    return res.status(400).send('Credentials do not match')
+    return res.status(400).send({ message: 'Credentials do not match' })
   }
 
   const comparePasswords = await bcrypt.compare(password, user.password)
   if (!comparePasswords) {
-    return res.status(400).send('Credentials do not match')
+    return res.status(400).send({ message: 'Credentials do not match' })
   }
 
   const id = user._id

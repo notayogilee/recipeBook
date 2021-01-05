@@ -5,8 +5,12 @@ import {
   recipeListReducer,
   recipeDetailsReducer
 } from './reducers/recipeReducers'
+import {
+  userLoginReducer
+} from './reducers/userReducers'
 
 const reducer = combineReducers({
+  userLogin: userLoginReducer,
   recipeList: recipeListReducer,
   recipeDetails: recipeDetailsReducer
 })

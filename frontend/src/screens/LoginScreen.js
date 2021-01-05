@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
 import { login } from '../actions/userActions'
 import {
   makeStyles,
@@ -12,9 +12,13 @@ import {
   Paper,
   Typography,
   TextField,
-  Button
+  Button,
+  InputAdornment,
+  IconButton
 } from '@material-ui/core'
-
+import { Visibility, VisibilityOff } from '@material-ui/icons'
+import Message from '../components/Message'
+import Loader from '../components/Loader'
 
 const theme = createMuiTheme({
   palette: {
@@ -51,16 +55,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const LoginScreen = () => {
+const LoginScreen = ({ history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword)
 
   const dispatch = useDispatch()
 
   const userLogin = useSelector(state => state.userLogin)
-  const { error, userInfo } = userLogin
+  const { loading, error, userInfo } = userLogin
 
   const classes = useStyles();
+
+  useEffect(() => {
+    if (userInfo) {
+      <Redirect to="/recipes" />
+    }
+  }, [userInfo])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -71,6 +84,8 @@ const LoginScreen = () => {
     <>
       <ThemeProvider theme={theme}>
         <Container maxWidth="md" className={classes.root} >
+          {error && <Message severity="error" message={error} />}
+          {loading && <Loader />}
           <Link to="/" className={classes.link}>
             <Typography
               component="header"
@@ -88,10 +103,44 @@ const LoginScreen = () => {
         </Typography>
           </Link>
           <Paper className={classes.paper} elevation={3}>
-            <form className={classes.paper} autoComplete="off">
-              <TextField id="standard-basic" label="Email" className={classes.input} />
-              <TextField id="standard-basic" label="Password" className={classes.input} />
-              <Button variant='contained' color='secondary' style={{ marginTop: "16px" }}>Login</Button>
+            <form
+              className={classes.paper}
+              autoComplete="off"
+              onSubmit={submitHandler}
+            >
+              <TextField
+                id="email"
+                label="Email"
+                className={classes.input}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                id="password"
+                type={showPassword ? "text" : "password"}
+                label="Password"
+                className={classes.input}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+              />
+              <Button
+                type="submit"
+                variant='contained'
+                color='secondary'
+                style={{ marginTop: "16px" }}
+              >
+                Login
+              </Button>
             </form>
             <Typography variant="subtitle">
               Don't have an account? <Link className={classes.link} to="/register"><strong>Register</strong></Link>
