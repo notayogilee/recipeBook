@@ -32,6 +32,12 @@ router.post('/', async (req, res) => {
 // @access Public
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
+
+  console.log(password, email)
+
+  if (!email || !password) {
+    return res.status(400).send({ message: 'Please fill in all fields' })
+  }
   const user = await User.findOne({ email })
   if (!user) {
     return res.status(400).send({ message: 'Credentials do not match' })

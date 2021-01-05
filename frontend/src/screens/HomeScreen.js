@@ -87,7 +87,7 @@ const HomeScreen = () => {
         {loading
           ? <Loader />
           : error
-            ? <Redirect to="/login" props={error} />
+            ? <Message severity="error" message={error} />
             : <Container maxWidth="lg" className={classes.root}>
               <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
                 {recipes.map((recipe) => (

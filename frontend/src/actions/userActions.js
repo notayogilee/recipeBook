@@ -7,7 +7,9 @@ import {
 } from '../constants/userContants'
 
 export const login = (email, password) => async (dispatch) => {
+
   try {
+
     dispatch({
       type: USER_LOGIN_REQUEST
     })

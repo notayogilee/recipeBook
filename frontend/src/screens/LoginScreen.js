@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { login } from '../actions/userActions'
 import {
   makeStyles,
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const LoginScreen = (props) => {
+const LoginScreen = () => {
   let history = useHistory()
 
   const [email, setEmail] = useState('')
@@ -67,6 +67,7 @@ const LoginScreen = (props) => {
   const dispatch = useDispatch()
 
   const userLogin = useSelector(state => state.userLogin)
+
   const { loading, error, userInfo } = userLogin
 
   const classes = useStyles();
@@ -77,6 +78,10 @@ const LoginScreen = (props) => {
     }
   }, [userInfo])
 
+  if (localStorage.getItem('userInfo')) {
+    return <Redirect to={{ pathname: "/recipes" }} />
+  }
+
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(login(email, password))
@@ -86,7 +91,6 @@ const LoginScreen = (props) => {
     <>
       <ThemeProvider theme={theme}>
         <Container maxWidth="md" className={classes.root} >
-          {props.error && <Message severity="error" message={error} />}
           {error && <Message severity="error" message={error} />}
           {loading && <Loader />}
           <Link to="/" className={classes.link}>

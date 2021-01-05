@@ -12,10 +12,6 @@ export const listRecipes = () => async (dispatch, getState) => {
   try {
     const { userLogin: { userInfo } } = getState()
 
-    if (!userInfo) {
-      throw new Error('You need to login or register to view recipes')
-    }
-
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`
