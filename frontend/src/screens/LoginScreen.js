@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { login } from '../actions/userActions'
 import {
   makeStyles,
@@ -55,7 +55,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const LoginScreen = ({ history }) => {
+const LoginScreen = (props) => {
+  let history = useHistory()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -71,7 +73,7 @@ const LoginScreen = ({ history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      <Redirect to="/recipes" />
+      history.push("/recipes")
     }
   }, [userInfo])
 
@@ -84,6 +86,7 @@ const LoginScreen = ({ history }) => {
     <>
       <ThemeProvider theme={theme}>
         <Container maxWidth="md" className={classes.root} >
+          {props.error && <Message severity="error" message={error} />}
           {error && <Message severity="error" message={error} />}
           {loading && <Loader />}
           <Link to="/" className={classes.link}>

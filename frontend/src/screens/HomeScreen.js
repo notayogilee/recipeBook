@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { listRecipes } from '../actions/recipeActions'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import {
   Card,
@@ -87,7 +87,7 @@ const HomeScreen = () => {
         {loading
           ? <Loader />
           : error
-            ? <Message severity="error" message={error} />
+            ? <Redirect to="/login" props={error} />
             : <Container maxWidth="lg" className={classes.root}>
               <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
                 {recipes.map((recipe) => (

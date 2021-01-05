@@ -1,6 +1,6 @@
 import React, {useEffect } from 'react'
 import { useDispatch, useSelector} from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import Ingredient from '../components/Ingredient'
 import {
   createMuiTheme,
@@ -60,7 +60,7 @@ const {loading, error, recipe} = recipeDetails
   const classes = useStyles()
 
   useEffect(() => {
-   dispatch(listRecipeDetails(match.params.id))
+      dispatch(listRecipeDetails(match.params.id))
   }, [dispatch, match])
 
   return (
@@ -178,7 +178,6 @@ const {loading, error, recipe} = recipeDetails
               {recipe.ingredients && recipe.ingredients.map((ingredient) =>  <Ingredient key={ingredient._id} ingredient={ingredient} />
               )}
             </Box>
-          
 
               <Typography
                 variant="h4"
