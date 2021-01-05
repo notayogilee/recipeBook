@@ -9,8 +9,10 @@ import {
 } from '../constants/recipeConstants'
 
 export const listRecipes = () => async (dispatch, getState) => {
+
   try {
-    const { userLogin: { userInfo } } = getState()
+    // const { userLogin: { userInfo } } = getState()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
     const config = {
       headers: {
@@ -35,6 +37,7 @@ export const listRecipes = () => async (dispatch, getState) => {
           : error.message
     })
   }
+
 }
 
 export const listRecipeDetails = (id) => async (dispatch) => {

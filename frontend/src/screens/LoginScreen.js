@@ -78,8 +78,8 @@ const LoginScreen = () => {
     }
   }, [userInfo])
 
-  if (localStorage.getItem('userInfo')) {
-    return <Redirect to={{ pathname: "/recipes" }} />
+  if (localStorage.userInfo) {
+    return <Redirect to={{ pathname: "/recipes", state: { token: localStorage.userInfo.token } }} />
   }
 
   const submitHandler = (e) => {

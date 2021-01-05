@@ -10,10 +10,8 @@ import RecipeScreen from './screens/RecipeScreen'
 
 const App = () => {
 
-  const userInfo = localStorage.getItem('userInfo')
-  console.log(userInfo)
   return (
-    <Router userInfo={userInfo}>
+    <Router>
       <>
         <Route exact path="/" component={LandingScreen} />
         <Route path="/register" component={RegisterScreen} />

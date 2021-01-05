@@ -1,6 +1,6 @@
 import React, {useEffect } from 'react'
 import { useDispatch, useSelector} from 'react-redux'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Ingredient from '../components/Ingredient'
 import {
   createMuiTheme,
@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
 const RecipeScreen = ({ match }) => {
 const dispatch = useDispatch()
 const recipeDetails = useSelector(state => state.recipeDetails)
@@ -64,6 +63,7 @@ const {loading, error, recipe} = recipeDetails
   }, [dispatch, match])
 
   return (
+
     <ThemeProvider theme={theme}>
       <>
         {loading ? <Loader /> : error ? <Message severity="error" message={error} /> : (
