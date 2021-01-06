@@ -11,9 +11,13 @@ import {
 export const listRecipes = () => async (dispatch, getState) => {
 
   try {
-    // const { userLogin: { userInfo } } = getState()
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const { userLogin: { userInfo } } = getState()
+    // const { userLogin: { isAuthenticated } } = getState()
 
+
+
+    // const token = JSON.parse(localStorage.getItem('token'))
+    console.log('userInfotoekn', userInfo)
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`

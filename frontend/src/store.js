@@ -15,7 +15,10 @@ const reducer = combineReducers({
   recipeDetails: recipeDetailsReducer
 })
 
-const initialState = {}
+const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
+console.log(userInfoFromStorage)
+
+const initialState = { userLogin: { userInfo: userInfoFromStorage } }
 
 const middleware = [thunk]
 

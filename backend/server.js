@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes')
 const recipeRoutes = require('./routes/recipeRoutes')
 const { errorHandler, notFound } = require('./middleware/errorMiddleware')
 
-dotenv.config()
+require('dotenv').config()
 
 connectDB()
 

@@ -39,9 +39,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     background: '#FCFFDB',
     '& > *': {
-      margin: theme.spacing(1),
-      width: theme.spacing("30%"),
-      height: theme.spacing("30%")
+      margin: theme.spacing(1)
     }
   },
   buttons: {
@@ -50,9 +48,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     '& > *': {
-      margin: theme.spacing(1),
-      width: theme.spacing('10%'),
-      height: theme.spacing('10%')
+      margin: theme.spacing(1)
     }
   },
   link: {

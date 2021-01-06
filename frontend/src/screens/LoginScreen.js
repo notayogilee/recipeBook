@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const LoginScreen = () => {
-  let history = useHistory()
+const LoginScreen = ({ location, history }) => {
+  // let history = useHistory()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -69,18 +69,19 @@ const LoginScreen = () => {
   const userLogin = useSelector(state => state.userLogin)
 
   const { loading, error, userInfo } = userLogin
-
-  const classes = useStyles();
+  console.log(location)
+  const redirect = location.search ? location.search.split("=")[1] : "/recipes"
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/recipes")
+      history.push(redirect)
     }
-  }, [userInfo])
+  }, [history, userInfo, redirect])
 
-  if (localStorage.userInfo) {
-    return <Redirect to={{ pathname: "/recipes", state: { token: localStorage.userInfo.token } }} />
-  }
+  const classes = useStyles();
+  // if (localStorage.userInfo) {
+  //   return <Redirect to={{ pathname: "/recipes" }} />
+  // }
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -149,7 +150,7 @@ const LoginScreen = () => {
                 Login
               </Button>
             </form>
-            <Typography variant="subtitle">
+            <Typography variant="subtitle1">
               Don't have an account? <Link className={classes.link} to="/register"><strong>Register</strong></Link>
             </Typography>
           </Paper>

@@ -117,7 +117,7 @@ const Register = () => {
               </FormControl>
               <Button onClick={handleSubmit} variant='contained' color='secondary' style={{ marginTop: "16px" }}>Register</Button>
             </form>
-            <Typography variant="subtitle">
+            <Typography variant="subtitle1">
               Already registered? <Link className={classes.link} to="/login"><strong>Login</strong></Link>
             </Typography>
           </Paper>

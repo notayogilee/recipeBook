@@ -59,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 const HomeScreen = () => {
-
   const dispatch = useDispatch()
   const recipeList = useSelector(state => state.recipeList)
   const { loading, error, recipes } = recipeList
@@ -71,6 +70,7 @@ const HomeScreen = () => {
   }, [dispatch])
 
   const isLoggedIn = localStorage.getItem('userInfo')
+
   if (!isLoggedIn) {
     return <Redirect to="/login" />
   }

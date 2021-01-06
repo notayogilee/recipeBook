@@ -26,7 +26,7 @@ router.get('/', protect, async (req, res) => {
 // @route GET /api/recipes/:id
 // @desc Get recipe by id 
 // @access Private
-router.get('/:id', async (req, res) => { // need to set back to private
+router.get('/:id', protect, async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id)
     if (!recipe) {

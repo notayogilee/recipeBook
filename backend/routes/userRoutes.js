@@ -33,24 +33,25 @@ router.post('/', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
 
-  console.log(password, email)
-
   if (!email || !password) {
     return res.status(400).send({ message: 'Please fill in all fields' })
   }
-  const user = await User.findOne({ email })
-  if (!user) {
+  const userInfo = await User.findOne({ email })
+  if (!userInfo) {
     return res.status(400).send({ message: 'Credentials do not match' })
   }
 
-  const comparePasswords = await bcrypt.compare(password, user.password)
+  const comparePasswords = await bcrypt.compare(password, userInfo.password)
   if (!comparePasswords) {
     return res.status(400).send({ message: 'Credentials do not match' })
   }
 
+  const user = await User.findOne({ email }).select('-password')
+
   const id = user._id
   const token = jwt.sign({ id }, process.env.JWT_SECRET)
-  res.send({ user, token })
+  // res.send({ user, token})
+  res.json({ user, token })
 })
 
 // @route PUT /api/users/myProfile/edit
@@ -191,6 +192,19 @@ router.get('/myProfile', protect, async (req, res) => {
   } catch (error) {
     console.log(chalk.red.bold(error))
     res.send(`Error: ${error}`)
+  }
+})
+
+// @route GET /api/users/auth
+// @desc Get authorized user
+// @access Private
+router.get('/auth', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password')
+    res.json(user)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(`Error: ${error}`)
   }
 })
 
