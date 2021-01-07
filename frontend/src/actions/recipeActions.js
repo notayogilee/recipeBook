@@ -12,12 +12,7 @@ export const listRecipes = () => async (dispatch, getState) => {
 
   try {
     const { userLogin: { userInfo } } = getState()
-    // const { userLogin: { isAuthenticated } } = getState()
 
-
-
-    // const token = JSON.parse(localStorage.getItem('token'))
-    console.log('userInfotoekn', userInfo)
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`
@@ -44,11 +39,19 @@ export const listRecipes = () => async (dispatch, getState) => {
 
 }
 
-export const listRecipeDetails = (id) => async (dispatch) => {
+export const listRecipeDetails = (id) => async (dispatch, getState) => {
   try {
+    const { userLogin: { userInfo } } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+
     dispatch({ type: RECIPE_DETAILS_REQUEST })
 
-    const { data } = await axios.get(`/api/recipes/${id}`)
+    const { data } = await axios.get(`/api/recipes/${id}`, config)
 
     dispatch({
       type: RECIPE_DETAILS_SUCCESS,

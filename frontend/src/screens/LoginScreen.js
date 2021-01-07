@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { login } from '../actions/userActions'
 import {
   makeStyles,
@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const LoginScreen = ({ location, history }) => {
-  // let history = useHistory()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -79,9 +78,6 @@ const LoginScreen = ({ location, history }) => {
   }, [history, userInfo, redirect])
 
   const classes = useStyles();
-  // if (localStorage.userInfo) {
-  //   return <Redirect to={{ pathname: "/recipes" }} />
-  // }
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -93,67 +89,71 @@ const LoginScreen = ({ location, history }) => {
       <ThemeProvider theme={theme}>
         <Container maxWidth="md" className={classes.root} >
           {error && <Message severity="error" message={error} />}
-          {loading && <Loader />}
-          <Link to="/" className={classes.link}>
-            <Typography
-              component="header"
-              variant="h2"
-              color="primary"
-              style={{
-                fontFamily: 'Righteous',
-                margin: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
+          {loading ? <Loader /> : (
+            <>
+              <Link to="/" className={classes.link}>
+                <Typography
+                  component="header"
+                  variant="h2"
+                  color="primary"
+                  style={{
+                    fontFamily: 'Righteous',
+                    margin: 16,
+                    alignItems: 'center',
+                    justifyContent: 'center',
 
-              }}
-            >
-              Recipe Book
-        </Typography>
-          </Link>
-          <Paper className={classes.paper} elevation={3}>
-            <form
-              className={classes.paper}
-              autoComplete="off"
-              onSubmit={submitHandler}
-            >
-              <TextField
-                id="email"
-                label="Email"
-                className={classes.input}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <TextField
-                id="password"
-                type={showPassword ? "text" : "password"}
-                label="Password"
-                className={classes.input}
-                onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <Button
-                type="submit"
-                variant='contained'
-                color='secondary'
-                style={{ marginTop: "16px" }}
-              >
-                Login
+                  }}
+                >
+                  Recipe Book
+           </Typography>
+              </Link>
+              <Paper className={classes.paper} elevation={3}>
+                <form
+                  className={classes.paper}
+                  autoComplete="off"
+                  onSubmit={submitHandler}
+                >
+                  <TextField
+                    id="email"
+                    label="Email"
+                    className={classes.input}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <TextField
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    label="Password"
+                    className={classes.input}
+                    onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    variant='contained'
+                    color='secondary'
+                    style={{ marginTop: "16px" }}
+                  >
+                    Login
               </Button>
-            </form>
-            <Typography variant="subtitle1">
-              Don't have an account? <Link className={classes.link} to="/register"><strong>Register</strong></Link>
-            </Typography>
-          </Paper>
+                </form>
+                <Typography variant="subtitle1">
+                  Don't have an account? <Link className={classes.link} to="/register"><strong>Register</strong></Link>
+                </Typography>
+              </Paper>
+            </>
+          )}
+
         </Container>
       </ThemeProvider>
     </>
