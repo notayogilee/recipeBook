@@ -11,7 +11,14 @@ import {
 export const listRecipes = () => async (dispatch, getState) => {
 
   try {
-    const { userLogin: { userInfo } } = getState()
+    let userInfo = {}
+    const { userLogin, userRegister } = getState()
+
+    if (!userLogin.userInfo) {
+      userInfo = userRegister.userInfo
+    } else {
+      userInfo = userLogin.userInfo
+    }
 
     const config = {
       headers: {
@@ -41,7 +48,15 @@ export const listRecipes = () => async (dispatch, getState) => {
 
 export const listRecipeDetails = (id) => async (dispatch, getState) => {
   try {
-    const { userLogin: { userInfo } } = getState()
+
+    let userInfo = {}
+    const { userLogin, userRegister } = getState()
+
+    if (!userLogin.userInfo) {
+      userInfo = userRegister.userInfo
+    } else {
+      userInfo = userLogin.userInfo
+    }
 
     const config = {
       headers: {

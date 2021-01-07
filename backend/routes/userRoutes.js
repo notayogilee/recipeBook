@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
   const userExists = await User.findOne({ email })
 
   if (userExists) {
-    return res.status(400).send('User already exists')
+    return res.status(400).send({ message: 'User already exists' })
   }
 
   const salt = bcrypt.genSaltSync(10)
@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
   const user = await User.create({ firstName, lastName, email, password: hashedPassword })
   const id = user._id
   const token = jwt.sign({ id }, process.env.JWT_SECRET)
-  res.status(201).send({ user, token })
+  res.status(201).json({ user, token })
 })
 
 // @route POST /api/users
@@ -192,19 +192,6 @@ router.get('/myProfile', protect, async (req, res) => {
   } catch (error) {
     console.log(chalk.red.bold(error))
     res.send(`Error: ${error}`)
-  }
-})
-
-// @route GET /api/users/auth
-// @desc Get authorized user
-// @access Private
-router.get('/auth', protect, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select('-password')
-    res.json(user)
-  } catch (error) {
-    console.error(error)
-    res.status(500).send(`Error: ${error}`)
   }
 })
 

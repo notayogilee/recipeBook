@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { register, login } from '../actions/userActions'
 import {
   makeStyles,
   createMuiTheme,
@@ -50,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Register = () => {
+const RegisterScreen = ({ location, history }) => {
   const classes = useStyles();
 
   const [firstName, setFirstName] = useState('')
@@ -60,6 +62,20 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
 
+  const dispatch = useDispatch()
+
+  const userRegister = useSelector(state => state.userRegister)
+
+  const { loading, error, userInfo } = userRegister
+
+  const redirect = location.search ? location.search.split("=")[1] : "/recipes"
+
+  useEffect(() => {
+    if (userInfo) {
+      history.push(redirect)
+    }
+  }, [history, userInfo, redirect])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
@@ -68,7 +84,7 @@ const Register = () => {
         setMessage('')
       }, 5000)
     } else {
-      setMessage('Cool')
+      dispatch(register(firstName, lastName, email, password))
     }
   }
 
@@ -127,4 +143,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterScreen

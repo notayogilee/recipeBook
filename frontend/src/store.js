@@ -6,10 +6,11 @@ import {
   recipeDetailsReducer
 } from './reducers/recipeReducers'
 import {
-  userLoginReducer
+  userLoginReducer, userRegisterReducer
 } from './reducers/userReducers'
 
 const reducer = combineReducers({
+  userRegister: userRegisterReducer,
   userLogin: userLoginReducer,
   recipeList: recipeListReducer,
   recipeDetails: recipeDetailsReducer
