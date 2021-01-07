@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { register, login } from '../actions/userActions'
+import { register } from '../actions/userActions'
 import {
   makeStyles,
   createMuiTheme,
@@ -65,8 +65,16 @@ const RegisterScreen = ({ location, history }) => {
   const dispatch = useDispatch()
 
   const userRegister = useSelector(state => state.userRegister)
+  const userLogin = useSelector(state => state.userLogin)
 
-  const { loading, error, userInfo } = userRegister
+  let userInfo = {}
+  if (!userRegister.userInfo) {
+    userInfo = userLogin.userInfo
+  }
+
+  const { loading, error } = userRegister
+
+  console.log(location)
 
   const redirect = location.search ? location.search.split("=")[1] : "/recipes"
 
@@ -74,7 +82,7 @@ const RegisterScreen = ({ location, history }) => {
     if (userInfo) {
       history.push(redirect)
     }
-  }, [history, userInfo, redirect])
+  }, [history, redirect])
 
   const handleSubmit = (e) => {
     e.preventDefault()
