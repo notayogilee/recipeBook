@@ -27,8 +27,18 @@ export const register = (firstName, lastName, email, password) => async (dispatc
       type: USER_REGISTER_SUCCESS,
       payload: data
     })
+    const { token, user } = data
 
-    await localStorage.setItem('userInfo', JSON.stringify(data))
+    // set to localstorage without password
+    localStorage.setItem('userInfo', JSON.stringify({
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        recipes: user.recipes
+      }, token
+    }))
 
   } catch (error) {
     dispatch({
@@ -60,7 +70,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data
     })
 
-    await localStorage.setItem('userInfo', JSON.stringify(data))
+    localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,

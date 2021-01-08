@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { register } from '../actions/userActions'
@@ -67,14 +67,18 @@ const RegisterScreen = ({ location, history }) => {
   const userRegister = useSelector(state => state.userRegister)
   const userLogin = useSelector(state => state.userLogin)
 
-  let userInfo = {}
+  // useMemo for conditional userInfo as dependancy in useEffect
+  let userInfo = useMemo(() => { }, [])
+
+  // looking for userInfo in localstorage, 
+  // starts in userRegister then is set as initial state
+  // in userLogin in store.js of redux
   if (!userRegister.userInfo) {
     userInfo = userLogin.userInfo
   }
+  userInfo = userRegister.userInfo
 
   const { loading, error } = userRegister
-
-  console.log(location)
 
   const redirect = location.search ? location.search.split("=")[1] : "/recipes"
 
@@ -82,7 +86,7 @@ const RegisterScreen = ({ location, history }) => {
     if (userInfo) {
       history.push(redirect)
     }
-  }, [history, redirect])
+  }, [history, userInfo, redirect])
 
   const handleSubmit = (e) => {
     e.preventDefault()

@@ -22,9 +22,11 @@ router.post('/', async (req, res) => {
   const hashedPassword = await bcrypt.hashSync(password, salt)
 
   const user = await User.create({ firstName, lastName, email, password: hashedPassword })
+
   const id = user._id
   const token = jwt.sign({ id }, process.env.JWT_SECRET)
-  res.status(201).json({ user, token })
+
+  res.status(201).send({ user, token })
 })
 
 // @route POST /api/users
