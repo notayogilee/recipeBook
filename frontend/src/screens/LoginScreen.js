@@ -14,7 +14,8 @@ import {
   TextField,
   Button,
   InputAdornment,
-  IconButton
+  IconButton,
+  Zoom
 } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import Message from '../components/Message'
@@ -60,6 +61,7 @@ const LoginScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const handleClickShowPassword = () => setShowPassword(!showPassword)
 
@@ -87,74 +89,80 @@ const LoginScreen = ({ location, history }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Container maxWidth="md" className={classes.root} >
-          {error && <Message severity="error" message={error} />}
-          {loading ? <Loader /> : (
-            <>
-              <Link to="/" className={classes.link}>
-                <Typography
-                  component="header"
-                  variant="h2"
-                  color="primary"
-                  style={{
-                    fontFamily: 'Righteous',
-                    margin: 16,
-                    alignItems: 'center',
-                    justifyContent: 'center',
+        <Zoom in={!loggedIn}>
+          <Zoom in={loggedIn}>
+            <Container maxWidth="md" className={classes.root} >
 
-                  }}
-                >
-                  Recipe Book
+              {error && <Message severity="error" message={error} />}
+              {loading ? <Loader /> : (
+                <>
+                  <Link to="/" className={classes.link}>
+                    <Typography
+                      component="header"
+                      variant="h2"
+                      color="primary"
+                      style={{
+                        fontFamily: 'Righteous',
+                        margin: 16,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+
+                      }}
+                    >
+                      Recipe Book
            </Typography>
-              </Link>
-              <Paper className={classes.paper} elevation={3}>
-                <form
-                  className={classes.paper}
-                  autoComplete="off"
-                  onSubmit={submitHandler}
-                >
-                  <TextField
-                    id="email"
-                    label="Email"
-                    className={classes.input}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <TextField
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    label="Password"
-                    className={classes.input}
-                    onChange={(e) => setPassword(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                  <Button
-                    type="submit"
-                    variant='contained'
-                    color='secondary'
-                    style={{ marginTop: "16px" }}
-                  >
-                    Login
-              </Button>
-                </form>
-                <Typography variant="subtitle1">
-                  Don't have an account? <Link className={classes.link} to="/register"><strong>Register</strong></Link>
-                </Typography>
-              </Paper>
-            </>
-          )}
+                  </Link>
 
-        </Container>
+                  <Paper className={classes.paper} elevation={3}>
+                    <form
+                      className={classes.paper}
+                      autoComplete="off"
+                      onSubmit={submitHandler}
+                    >
+                      <TextField
+                        id="email"
+                        label="Email"
+                        className={classes.input}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <TextField
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        label="Password"
+                        className={classes.input}
+                        onChange={(e) => setPassword(e.target.value)}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                              >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                      <Button
+                        type="submit"
+                        variant='contained'
+                        color='secondary'
+                        style={{ marginTop: "16px" }}
+                      >
+                        Login
+              </Button>
+                    </form>
+                    <Typography variant="subtitle1">
+                      Don't have an account? <Link className={classes.link} to="/register"><strong>Register</strong></Link>
+                    </Typography>
+                  </Paper>
+                </>
+              )}
+
+            </Container>
+          </Zoom>
+        </Zoom>
       </ThemeProvider>
     </>
   )

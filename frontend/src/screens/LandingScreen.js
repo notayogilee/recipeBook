@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   makeStyles,
@@ -10,7 +10,10 @@ import {
   Typography,
   Hidden,
   Button,
-  Paper
+  Paper,
+  Slide,
+  Grow,
+  Fade
 } from '@material-ui/core'
 import image from '../images/landing.jpg'
 
@@ -58,79 +61,96 @@ const useStyles = makeStyles((theme) => ({
 
 const Landing = () => {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(true)
   return (
     <>
       <ThemeProvider theme={theme}>
         <Container maxWidth="lg" className={classes.root}>
           <Container className={classes.buttons}>
-            <Typography
-              component="header"
-              variant="h1"
-              color="primary"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: 'auto',
-                fontFamily: 'Righteous'
-              }}
-            >
-              Recipe Book
+            <Slide in={open} direction="left" timeout={500}>
+              <Typography
+                component="header"
+                variant="h1"
+                color="primary"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: 'auto',
+                  fontFamily: 'Righteous'
+                }}
+              >
+                Recipe Book
               </Typography>
+            </Slide>
           </Container>
 
           <Hidden smDown>
-            <Paper
-              elevation={5}
-              component="div"
-              style={{
-                backgroundImage: `url(${image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                height: 'auto',
-                width: '50%',
-                overflow: 'hidden'
-              }}
-            />
+            <Slide in={open} direction="down">
+              <Paper
+                elevation={5}
+                component="div"
+                style={{
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  height: 'auto',
+                  width: '50%',
+                  overflow: 'hidden'
+                }}
+              />
+            </Slide>
           </Hidden>
           <Hidden xsDown>
-            <Paper
-              elevation={4}
-              component="div"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '1rem',
-                background: '#ffab40'
-              }}
-            >
-              <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
-                Share
+            <Slide in={open} direction="up">
+              <Paper
+                elevation={4}
+                component="div"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '1rem',
+                  background: '#ffab40'
+                }}
+              >
+                <Fade in={open} timeout={1500}>
+                  <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
+                    Share
               </Typography>
-              <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
-                Some
+                </Fade>
+                <Fade in={open} timeout={2000}>
+                  <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
+                    Some
               </Typography>
-              <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
-                Magic
+                </Fade>
+                <Fade in={open} timeout={2500}>
+                  <Typography variant="h1" color="secondary" style={{ fontFamily: 'Righteous' }}>
+                    Magic
               </Typography>
-
-            </Paper>
+                </Fade>
+              </Paper>
+            </Slide>
           </Hidden>
 
           <Container className={classes.buttons} >
-            <Link to="/register" className={classes.link}>
-              <Button size="large" variant="contained" color="secondary"  >
-                Register
+            <Grow in={open} timeout={700}>
+              <Link to="/register" className={classes.link}>
+                <Button size="large" variant="contained" color="secondary"  >
+                  Register
             </Button>
-            </Link>
-            <Link to="/login" className={classes.link}>
-              <Button size="large" variant="contained" color="secondary" >
-                Login
+              </Link>
+            </Grow>
+            <Grow in={open} timeout={1200}>
+              <Link to="/login" className={classes.link}>
+                <Button size="large" variant="contained" color="secondary" >
+                  Login
             </Button>
-            </Link>
+              </Link>
+            </Grow>
           </Container>
 
         </Container>
