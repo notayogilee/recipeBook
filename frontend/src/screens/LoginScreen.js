@@ -18,7 +18,6 @@ import {
 } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 
 const theme = createMuiTheme({
   palette: {
@@ -82,7 +81,7 @@ const LoginScreen = ({ history }) => {
 
   const dispatch = useDispatch()
   const userLogin = useSelector(state => state.userLogin)
-  const { loading, error, userInfo } = userLogin
+  const { error, userInfo } = userLogin
 
   useEffect(() => {
     if (userInfo) {

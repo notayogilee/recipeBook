@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import {
   makeStyles,
   createMuiTheme,
@@ -65,6 +66,8 @@ const Landing = ({ history }) => {
   const [login, setLogin] = useState(false)
   const [register, setRegister] = useState(false)
 
+  const { userInfo } = useSelector(state => state.userLogin)
+
   const handleLogin = () => {
     setOpen(false)
     return setTimeout(() => {
@@ -80,13 +83,16 @@ const Landing = ({ history }) => {
   }
 
   useEffect(() => {
+    if (userInfo) {
+      history.push("/recipes")
+    }
     if (login) {
       history.push("/login")
     }
     if (register) {
       history.push("/register")
     }
-  }, [login, register, history])
+  }, [login, register, userInfo, history])
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../actions/userActions'
 import Message from '../components/Message'
@@ -72,17 +72,20 @@ const RegisterScreen = ({ history }) => {
   const userRegister = useSelector(state => state.userRegister)
   const userLogin = useSelector(state => state.userLogin)
 
-  // useMemo for conditional userInfo as dependancy in useEffect
-  let userInfo = useMemo(() => { }, [])
+  let userInfo;
+  if (!userRegister.userInfo) {
+    userInfo = userLogin.userInfo
+  } else {
+    userInfo = userRegister.userInfo
+  }
 
   // looking for userInfo in localstorage, 
   // starts in userRegister then is set as initial state
   // in userLogin in store.js of redux
-  if (!userRegister.userInfo) {
-    userInfo = userLogin.userInfo
-  }
-  userInfo = userRegister.userInfo
-  const { loading, error } = userRegister
+
+  const { error } = userRegister
+
+  console.log(userInfo)
 
   useEffect(() => {
     if (userInfo) {
