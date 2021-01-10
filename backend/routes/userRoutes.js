@@ -17,16 +17,19 @@ router.post('/', async (req, res) => {
   if (userExists) {
     return res.status(400).send({ message: 'User already exists' })
   }
+  try {
+    const salt = bcrypt.genSaltSync(10)
+    const hashedPassword = await bcrypt.hashSync(password, salt)
 
-  const salt = bcrypt.genSaltSync(10)
-  const hashedPassword = await bcrypt.hashSync(password, salt)
+    const user = await User.create({ firstName, lastName, email, password: hashedPassword })
 
-  const user = await User.create({ firstName, lastName, email, password: hashedPassword })
+    const id = user._id
+    const token = jwt.sign({ id }, process.env.JWT_SECRET)
 
-  const id = user._id
-  const token = jwt.sign({ id }, process.env.JWT_SECRET)
-
-  res.status(201).send({ user, token })
+    res.status(201).send({ user, token })
+  } catch (error) {
+    res.status(500).json(error)
+  }
 })
 
 // @route POST /api/users

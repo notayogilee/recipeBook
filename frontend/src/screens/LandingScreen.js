@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import {
   makeStyles,
   createMuiTheme,
@@ -59,10 +58,36 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Landing = () => {
+const Landing = ({ history }) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(true)
+  const [login, setLogin] = useState(false)
+  const [register, setRegister] = useState(false)
+
+  const handleLogin = () => {
+    setOpen(false)
+    return setTimeout(() => {
+      setLogin(true)
+    }, 100)
+  }
+
+  const handleRegister = () => {
+    setOpen(false)
+    return setTimeout(() => {
+      setRegister(true)
+    }, 100)
+  }
+
+  useEffect(() => {
+    if (login) {
+      history.push("/login")
+    }
+    if (register) {
+      history.push("/register")
+    }
+  }, [login, register, history])
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -138,21 +163,16 @@ const Landing = () => {
 
           <Container className={classes.buttons} >
             <Grow in={open} timeout={700}>
-              <Link to="/register" className={classes.link}>
-                <Button size="large" variant="contained" color="secondary"  >
-                  Register
+              <Button onClick={handleRegister} size="large" variant="contained" color="secondary"  >
+                Register
             </Button>
-              </Link>
             </Grow>
             <Grow in={open} timeout={1200}>
-              <Link to="/login" className={classes.link}>
-                <Button size="large" variant="contained" color="secondary" >
-                  Login
+              <Button onClick={handleLogin} size="large" variant="contained" color="secondary" >
+                Login
             </Button>
-              </Link>
             </Grow>
           </Container>
-
         </Container>
       </ThemeProvider>
     </>

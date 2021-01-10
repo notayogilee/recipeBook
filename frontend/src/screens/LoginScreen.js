@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { login } from '../actions/userActions'
 import {
   makeStyles,
@@ -15,7 +14,7 @@ import {
   Button,
   InputAdornment,
   IconButton,
-  Zoom
+  Slide
 } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import Message from '../components/Message'
@@ -52,32 +51,50 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: 'none',
-    color: '#8d6e63'
+    color: '#8d6e63',
+    cursor: 'pointer'
   }
 }))
 
-const LoginScreen = ({ location, history }) => {
+const LoginScreen = ({ history }) => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [showLogin, setShowLogin] = useState(true)
+  const [showRegister, setShowRegister] = useState(false)
+  const [showLanding, setShowLanding] = useState(false)
 
   const handleClickShowPassword = () => setShowPassword(!showPassword)
+  const handleRegister = () => {
+    setShowLogin(false)
+    return setTimeout(() => {
+      setShowRegister(true)
+    }, 50)
+  }
+
+  const handleLanding = () => {
+    setShowLogin(false)
+    return setTimeout(() => {
+      setShowLanding(true)
+    }, 100)
+  }
 
   const dispatch = useDispatch()
-
   const userLogin = useSelector(state => state.userLogin)
-
   const { loading, error, userInfo } = userLogin
-
-  const redirect = location.search ? location.search.split("=")[1] : "/recipes"
 
   useEffect(() => {
     if (userInfo) {
-      history.push(redirect)
+      history.push("/recipes")
     }
-  }, [history, userInfo, redirect])
+    if (showRegister) {
+      history.push("/register")
+    }
+    if (showLanding) {
+      history.push("/")
+    }
+  }, [history, userInfo, showRegister, showLanding])
 
   const classes = useStyles();
 
@@ -89,80 +106,74 @@ const LoginScreen = ({ location, history }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Zoom in={!loggedIn}>
-          <Zoom in={loggedIn}>
-            <Container maxWidth="md" className={classes.root} >
-
-              {error && <Message severity="error" message={error} />}
-              {loading ? <Loader /> : (
-                <>
-                  <Link to="/" className={classes.link}>
-                    <Typography
-                      component="header"
-                      variant="h2"
-                      color="primary"
-                      style={{
-                        fontFamily: 'Righteous',
-                        margin: 16,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-
-                      }}
-                    >
-                      Recipe Book
+        <Container maxWidth="md" className={classes.root} >
+          {error && <Message severity="error" message={error} />}
+          <>
+            <div onClick={handleLanding} className={classes.link}>
+              <Slide in={showLogin} direction="left">
+                <Typography
+                  component="header"
+                  variant="h2"
+                  color="primary"
+                  style={{
+                    fontFamily: 'Righteous',
+                    margin: 16,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  Recipe Book
            </Typography>
-                  </Link>
-
-                  <Paper className={classes.paper} elevation={3}>
-                    <form
-                      className={classes.paper}
-                      autoComplete="off"
-                      onSubmit={submitHandler}
-                    >
-                      <TextField
-                        id="email"
-                        label="Email"
-                        className={classes.input}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      <TextField
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        label="Password"
-                        className={classes.input}
-                        onChange={(e) => setPassword(e.target.value)}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                              >
-                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                              </IconButton>
-                            </InputAdornment>
-                          )
-                        }}
-                      />
-                      <Button
-                        type="submit"
-                        variant='contained'
-                        color='secondary'
-                        style={{ marginTop: "16px" }}
-                      >
-                        Login
+              </Slide>
+            </div>
+            <Slide in={showLogin} direction="right">
+              <Paper className={classes.paper} elevation={3}>
+                <form
+                  className={classes.paper}
+                  autoComplete="off"
+                  onSubmit={submitHandler}
+                >
+                  <TextField
+                    id="email"
+                    label="Email"
+                    className={classes.input}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <TextField
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    label="Password"
+                    className={classes.input}
+                    onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    variant='contained'
+                    color='secondary'
+                    style={{ marginTop: "16px" }}
+                  >
+                    Login
               </Button>
-                    </form>
-                    <Typography variant="subtitle1">
-                      Don't have an account? <Link className={classes.link} to="/register"><strong>Register</strong></Link>
-                    </Typography>
-                  </Paper>
-                </>
-              )}
-
-            </Container>
-          </Zoom>
-        </Zoom>
+                </form>
+                <Typography variant="subtitle1">
+                  Don't have an account? <Button onClick={handleRegister} className={classes.link}><strong>Register</strong></Button>
+                </Typography>
+              </Paper>
+            </Slide>
+          </>
+        </Container>
       </ThemeProvider>
     </>
   )
