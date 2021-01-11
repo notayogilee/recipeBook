@@ -65,6 +65,7 @@ const LoginScreen = ({ history }) => {
   const [showLanding, setShowLanding] = useState(false)
 
   const handleClickShowPassword = () => setShowPassword(!showPassword)
+
   const handleRegister = () => {
     setShowLogin(false)
     return setTimeout(() => {

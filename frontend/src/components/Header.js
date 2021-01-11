@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import {
-  AppBar,
-  Toolbar,
   Typography,
   Button,
   Container,
-  Collapse,
+  Box,
   Fade,
   Slide,
   Zoom
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import CloseIcon from '@material-ui/icons/Close';
+import { MoreTwoTone, CloseTwoTone } from '@material-ui/icons'
 
 const theme = createMuiTheme({
   palette: {
@@ -36,6 +33,8 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    justifyContent: "start",
+    alignItems: "center",
     flexGrow: 1,
     height: "100px",
     width: "100%"
@@ -60,36 +59,83 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false)
+  const [close, setClose] = useState(true)
 
-  const handleChange = () => {
-    setOpen(!open)
+  const userLogin = useSelector(state => state.userLogin)
+  const userRegister = useSelector(state => state.userRegister)
+
+  // Initialize userInfo
+  let userInfo;
+
+  if (!userRegister.userInfo) {
+    userInfo = userLogin.userInfo
+  } else {
+    userInfo = userRegister.userInfo
   }
+
+  const handleOpen = () => {
+    setClose(false)
+    setTimeout(() => {
+      setOpen(true)
+    }, 1000)
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    setTimeout(() => {
+      setClose(true)
+    }, 100)
+    setClose(true)
+  }
+
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className={classes.root}>
-        <Slide direction="left" in={!open}>
-          <IconButton onClick={handleChange} color="inherit" aria-label="menu">
-            <MenuIcon fontSize="large" />
-          </IconButton>
-        </Slide>
-        <Collapse in={open}>
-          <Container className={classes.buttons} >
-            <IconButton onClick={handleChange} color="inherit" aria-label="menu">
-              <CloseIcon onClick={handleChange} fontSize="large" />
-            </IconButton>
-            <Link to="/register" className={classes.link}>
-              <Button size="large" variant="contained" color="secondary"  >
-                Register
-            </Button>
-            </Link>
-            <Link to="/login" className={classes.link}>
-              <Button size="large" variant="contained" color="secondary" >
-                Login
-            </Button>
-            </Link>
-          </Container>
-        </Collapse>
+      <Container maxWidth="lg" >
+        {open &&
+          <Slide direction="left" in={open}>
+            <Box className={classes.root}>
+              <IconButton
+                onClick={handleClose}
+              >
+                <CloseTwoTone
+                  color="primary"
+                  fontSize="large"
+                />
+              </IconButton>
+
+            </Box>
+          </Slide>
+        }
+        {close &&
+          <Slide direction="right" in={close}>
+            <Box className={classes.root}>
+              <IconButton
+                onClick={handleOpen}
+              >
+                <MoreTwoTone
+                  color="primary"
+                  fontSize="large"
+                  style={{
+                    transform: "rotate(180deg)"
+                  }}
+                />
+              </IconButton>
+              {userInfo &&
+                <Typography
+                  color="secondary"
+                  style={{
+                    fontSize: "30px",
+
+                  }}
+                >
+                  Welcome {userInfo.user.firstName} {userInfo.user.lastName}
+                </Typography>
+              }
+            </Box>
+          </Slide>
+        }
       </Container>
     </ThemeProvider>
   );

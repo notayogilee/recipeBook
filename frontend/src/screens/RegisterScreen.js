@@ -72,20 +72,19 @@ const RegisterScreen = ({ history }) => {
   const userRegister = useSelector(state => state.userRegister)
   const userLogin = useSelector(state => state.userLogin)
 
+  // Initialize userInfo
   let userInfo;
+
+  // looking for userInfo in localstorage, 
+  // starts in userRegister then is set as initial state
+  // in userLogin in store.js of redux
   if (!userRegister.userInfo) {
     userInfo = userLogin.userInfo
   } else {
     userInfo = userRegister.userInfo
   }
 
-  // looking for userInfo in localstorage, 
-  // starts in userRegister then is set as initial state
-  // in userLogin in store.js of redux
-
   const { error } = userRegister
-
-  console.log(userInfo)
 
   useEffect(() => {
     if (userInfo) {
@@ -153,24 +152,28 @@ const RegisterScreen = ({ history }) => {
               <Typography>{message}</Typography>
               <form className={classes.paper} autoComplete="off">
                 <FormControl>
-                  <InputLabel htmlFor="component-simple">First Name</InputLabel>
-                  <Input id="component-simple" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                  <InputLabel htmlFor="first-name">First Name</InputLabel>
+                  <Input id="first-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                 </FormControl>
                 <FormControl>
-                  <InputLabel htmlFor="component-simple">Last Name</InputLabel>
-                  <Input id="component-simple" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                  <InputLabel htmlFor="last-name">Last Name</InputLabel>
+                  <Input id="last-name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                 </FormControl>
                 <FormControl>
-                  <InputLabel htmlFor="component-simple">Email</InputLabel>
-                  <Input id="component-simple" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <InputLabel htmlFor="email">Email</InputLabel>
+                  <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </FormControl>
                 <FormControl>
-                  <InputLabel htmlFor="password">Password</InputLabel>
-                  <Input id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <InputLabel
+                    htmlFor="password"
+                  >Password</InputLabel>
+                  <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </FormControl>
                 <FormControl>
-                  <InputLabel htmlFor="component-simple">Confirm Password</InputLabel>
-                  <Input id="component-simple" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                  <InputLabel
+                    htmlFor="confirm-password"
+                  >Confirm Password</InputLabel>
+                  <Input id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                 </FormControl>
                 <Button onClick={handleSubmit} variant='contained' color='secondary' style={{ marginTop: "16px" }}>Register</Button>
               </form>
