@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../actions/userActions'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import {
   Typography,
   Button,
   Container,
   Box,
-  Fade,
   Slide,
-  Zoom
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton';
 import { MoreTwoTone, CloseTwoTone } from '@material-ui/icons'
@@ -61,6 +61,8 @@ const Header = () => {
   const [open, setOpen] = useState(false)
   const [close, setClose] = useState(true)
 
+  const dispatch = useDispatch()
+
   const userLogin = useSelector(state => state.userLogin)
   const userRegister = useSelector(state => state.userRegister)
 
@@ -89,6 +91,9 @@ const Header = () => {
     setClose(true)
   }
 
+  const handleLogout = () => {
+    dispatch(logout())
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -104,7 +109,10 @@ const Header = () => {
                   fontSize="large"
                 />
               </IconButton>
-
+              <Button>My Recipes</Button>
+              <Link to="/">
+                <Button onClick={handleLogout}>Logout</Button>
+              </Link>
             </Box>
           </Slide>
         }

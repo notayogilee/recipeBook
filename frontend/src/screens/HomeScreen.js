@@ -14,7 +14,7 @@ import {
   CardActions,
   IconButton,
 } from '@material-ui/core'
-import { Favorite, ExpandMore, MoreVert } from '@material-ui/icons';
+import { Favorite, ExpandMore } from '@material-ui/icons';
 // import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Loader from '../components/Loader'
 import Message from '../components/Message'
