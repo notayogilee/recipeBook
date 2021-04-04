@@ -109,7 +109,9 @@ const Header = () => {
                   fontSize="large"
                 />
               </IconButton>
-              <Button>My Recipes</Button>
+              <Link to="/myRecipes">
+                <Button>My Recipes</Button>
+              </Link>
               <Link to="/">
                 <Button onClick={handleLogout}>Logout</Button>
               </Link>

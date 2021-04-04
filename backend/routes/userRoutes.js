@@ -184,7 +184,7 @@ router.get('/', protect, async (req, res) => {
 
 // @route GET /api/users/myProfile
 // @desc Get a user by id
-// @access Public - will be private
+// @access Private
 router.get('/myProfile', protect, async (req, res) => {
   const _id = req.user._id
   try {
