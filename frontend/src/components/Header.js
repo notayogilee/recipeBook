@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../actions/userActions'
@@ -8,10 +8,8 @@ import {
   Button,
   Container,
   Box,
-  Slide,
 } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton';
-import { MoreTwoTone, CloseTwoTone } from '@material-ui/icons'
+
 
 const theme = createMuiTheme({
   palette: {
@@ -33,7 +31,7 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    justifyContent: "start",
+    justifyContent: "space-between",
     alignItems: "center",
     flexGrow: 1,
     height: "100px",
@@ -58,8 +56,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false)
-  const [close, setClose] = useState(true)
 
   const dispatch = useDispatch()
 
@@ -75,22 +71,6 @@ const Header = () => {
     userInfo = userRegister.userInfo
   }
 
-  const handleOpen = () => {
-    setClose(false)
-    setTimeout(() => {
-      setOpen(true)
-    }, 1000)
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-    setTimeout(() => {
-      setClose(true)
-    }, 100)
-    setClose(true)
-  }
-
   const handleLogout = () => {
     dispatch(logout())
   }
@@ -98,54 +78,29 @@ const Header = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg" >
-        {open &&
-          <Slide direction="left" in={open}>
-            <Box className={classes.root}>
-              <IconButton
-                onClick={handleClose}
+        <Box className={classes.root}>
+          {userInfo &&
+            <>
+              <Typography
+                color="secondary"
+                style={{
+                  fontSize: "30px",
+                }}
               >
-                <CloseTwoTone
-                  color="primary"
-                  fontSize="large"
-                />
-              </IconButton>
-              <Link to="/myRecipes">
-                <Button>My Recipes</Button>
-              </Link>
-              <Link to="/">
-                <Button onClick={handleLogout}>Logout</Button>
-              </Link>
-            </Box>
-          </Slide>
-        }
-        {close &&
-          <Slide direction="right" in={close}>
-            <Box className={classes.root}>
-              <IconButton
-                onClick={handleOpen}
-              >
-                <MoreTwoTone
-                  color="primary"
-                  fontSize="large"
-                  style={{
-                    transform: "rotate(180deg)"
-                  }}
-                />
-              </IconButton>
-              {userInfo &&
-                <Typography
-                  color="secondary"
-                  style={{
-                    fontSize: "30px",
+                Welcome {userInfo.user.firstName} {userInfo.user.lastName}
+              </Typography>
 
-                  }}
-                >
-                  Welcome {userInfo.user.firstName} {userInfo.user.lastName}
-                </Typography>
-              }
-            </Box>
-          </Slide>
-        }
+              <Box>
+                <Link to="/myRecipes">
+                  <Button>My Recipes</Button>
+                </Link>
+                <Link to="/">
+                  <Button onClick={handleLogout}>Logout</Button>
+                </Link>
+              </Box>
+            </>
+          }
+        </Box>
       </Container>
     </ThemeProvider>
   );

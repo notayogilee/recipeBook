@@ -8,3 +8,7 @@
   height: 100%;
   background-color:#FCFFDB;
 }
+
+a {
+  text-decoration: none;
+}

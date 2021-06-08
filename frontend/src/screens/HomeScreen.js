@@ -18,6 +18,7 @@ import { Favorite, ExpandMore } from '@material-ui/icons';
 // import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Header from '../components/Header'
 
 const theme = createMuiTheme({
   palette: {
@@ -40,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
     background: '#FCFFDB',
     paddingBottom: '4rem',
     width: '100%',
@@ -81,23 +81,20 @@ const HomeScreen = () => {
     <>
       <ThemeProvider theme={theme}>
         <Container>
-          {/* <IconButton>
-            <MoreVert
-              color="secondary"
-              fontSize="large" />
-          </IconButton> */}
-          {/* <Typography
-          variant="h1"
-          component="div"
-          color="primary"
-          style={{
-            fontFamily: "Righteous",
-            padding: "2rem",
-            textAlign: "center"
-          }}
-        >
-          Recipes
-      </Typography> */}
+          <Header />
+
+          <Typography
+            variant="h1"
+            component="div"
+            color="primary"
+            style={{
+              fontFamily: "Righteous",
+              padding: "2rem",
+              // textAlign: "center"
+            }}
+          >
+            Recipes
+      </Typography>
           {loading
             ? <Loader />
             : error
