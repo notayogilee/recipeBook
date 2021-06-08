@@ -6,7 +6,10 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
-  USER_LOGOUT
+  USER_LOGOUT,
+  USER_RECIPE_LIST_REQUEST,
+  USER_RECIPE_LIST_SUCCESS,
+  USER_RECIPE_LIST_FAIL,
 } from '../constants/userContants'
 
 export const register = (firstName, lastName, email, password) => async (dispatch) => {
@@ -87,4 +90,40 @@ export const logout = () => async (dispatch) => {
     type: USER_LOGOUT,
     payload: null
   })
+}
+
+export const userListRecipes = () => async (dispatch, getState) => {
+  try {
+    let userInfo = {}
+    const { userLogin, userRegister } = getState()
+
+    if (!userLogin.userInfo) {
+      userInfo = userRegister.userInfo
+    } else {
+      userInfo = userLogin.userInfo
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+
+    dispatch({ type: USER_RECIPE_LIST_REQUEST })
+
+    const { data } = await axios.get('/api/users/myRecipes', config)
+    console.log(data)
+    dispatch({
+      type: USER_RECIPE_LIST_SUCCESS,
+      payload: data
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_RECIPE_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    })
+  }
 }
