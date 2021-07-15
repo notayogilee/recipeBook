@@ -4,7 +4,7 @@ import LandingScreen from './screens/LandingScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import PublicRecipesScreen from './screens/PublicRecipesScreen'
-import RecipeScreen from './screens/RecipeScreen'
+import RecipeDetailsScreen from './screens/RecipeDetailsScreen'
 import MyRecipesScreen from './screens/MyRecipesScreen'
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/register" component={RegisterScreen} />
         <Route path="/login" component={LoginScreen} />
         <Route path="/recipes" component={PublicRecipesScreen} />
-        <Route path="/recipe/:id" component={RecipeScreen} />
+        <Route path="/recipe/:id" component={RecipeDetailsScreen} />
         <Route path="/myRecipes" component={MyRecipesScreen} />
       </Switch>
     </Router>
