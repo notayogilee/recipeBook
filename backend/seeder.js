@@ -8,7 +8,6 @@ const Recipe = require('./models/recipeModel')
 const connectDB = require('./config/db')
 
 dotenv.config()
-
 connectDB()
 
 const importData = async () => {
@@ -28,13 +27,11 @@ const importData = async () => {
 
     // Add user created recipe to user recipes array
     const updatedUsers = await createdRecipes.map((recipe, index) => {
-
       const id = recipe._id
       const user = createdUsers[index]
       user.recipes = [...user.recipes, id]
       return user
-    }
-    )
+    })
 
     await User.deleteMany()
     await User.insertMany(updatedUsers)

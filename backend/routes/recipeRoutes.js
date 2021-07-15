@@ -1,5 +1,5 @@
 const express = require('express')
-
+const chalk = require('chalk')
 const router = express.Router()
 const Recipe = require('../models/recipeModel')
 const protect = require('../middleware/auth')
@@ -77,7 +77,7 @@ router.post('/', protect, async (req, res) => {
 
     const user = await User.findById(req.user._id)
 
-    user.recipes = [...user.recipes, recipe._id]
+    user.recipes = [...user.recipes, recipe]
 
     await user.save()
 

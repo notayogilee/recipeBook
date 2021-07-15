@@ -66,6 +66,8 @@ const UserRecipesScreen = () => {
 
   const classes = useStyles()
 
+
+
   useEffect(() => {
     dispatch(userListRecipes())
   }, [dispatch])
@@ -93,7 +95,7 @@ const UserRecipesScreen = () => {
             }}
           >
             My Recipes
-      </Typography>
+          </Typography>
           {loading
             ? <Loader />
             : error
@@ -144,7 +146,7 @@ const UserRecipesScreen = () => {
                         </Card>
                       </Grid>
                     )))}
-                )
+                  )
 
 
                 </Grid>

@@ -15,7 +15,6 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { Favorite, ExpandMore } from '@material-ui/icons';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Header from '../components/Header'
@@ -94,7 +93,7 @@ const HomeScreen = () => {
             }}
           >
             Recipes
-      </Typography>
+          </Typography>
           {loading
             ? <Loader />
             : error

@@ -85,8 +85,25 @@ router.put('/myProfile/edit', protect, async (req, res) => {
 // @desc Get all user recipes
 // @access private
 router.get('/myRecipes', protect, async (req, res) => {
-  const user = await User.findById(req.user._id)
-  res.send(user.recipes)
+  try {
+    const user = await User.findById(req.user._id)
+
+    if (user.recipes.length === 0) res.send([])
+    else {
+      const userRecipes = []
+      for (let i = 0; i < user.recipes.length; i++) {
+        const recipe = await Recipe.findById(user.recipes[i])
+        await userRecipes.push(recipe)
+      }
+
+      res.send(userRecipes)
+    }
+
+  } catch (error) {
+    console.error("ERROR", error)
+    res.status(500).send(error)
+  }
+
 })
 
 // @route PUT /api/users/myRecipes
