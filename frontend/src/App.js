@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import LandingScreen from './screens/LandingScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
-import HomeScreen from './screens/HomeScreen'
+import PublicRecipesScreen from './screens/PublicRecipesScreen'
 import RecipeScreen from './screens/RecipeScreen'
-import UserRecipes from './screens/UserRecipesScreen'
+import MyRecipesScreen from './screens/MyRecipesScreen'
 
 const App = () => {
 
@@ -15,9 +15,9 @@ const App = () => {
         <Route exact path="/" component={LandingScreen} />
         <Route path="/register" component={RegisterScreen} />
         <Route path="/login" component={LoginScreen} />
-        <Route path="/recipes" component={HomeScreen} />
+        <Route path="/recipes" component={PublicRecipesScreen} />
         <Route path="/recipe/:id" component={RecipeScreen} />
-        <Route path="/myRecipes" component={UserRecipes} />
+        <Route path="/myRecipes" component={MyRecipesScreen} />
       </Switch>
     </Router>
   );

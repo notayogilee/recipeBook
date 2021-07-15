@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     // paddingTop: '56.25%'
   }
 }))
-const HomeScreen = () => {
+const PublicRecipesScreen = () => {
   const dispatch = useDispatch()
   const recipeList = useSelector(state => state.recipeList)
   const { loading, error, recipes } = recipeList
@@ -107,4 +107,4 @@ const HomeScreen = () => {
   )
 }
 
-export default HomeScreen
+export default PublicRecipesScreen
