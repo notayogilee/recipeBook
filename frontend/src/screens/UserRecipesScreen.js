@@ -146,9 +146,6 @@ const UserRecipesScreen = () => {
                         </Card>
                       </Grid>
                     )))}
-                  )
-
-
                 </Grid>
               </Container>
           }

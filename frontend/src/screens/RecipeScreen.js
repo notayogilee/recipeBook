@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Ingredient from '../components/Ingredient'
 import {
@@ -18,7 +18,7 @@ import {
   Hidden
 } from '@material-ui/core'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import {listRecipeDetails} from '../actions/recipeActions'
+import { listRecipeDetails } from '../actions/recipeActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
@@ -51,15 +51,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const RecipeScreen = ({ match }) => {
-const dispatch = useDispatch()
-const recipeDetails = useSelector(state => state.recipeDetails)
-const {loading, error, recipe} = recipeDetails
+const RecipeScreen = ({ match, history }) => {
+  console.log(history)
+  const dispatch = useDispatch()
+  const recipeDetails = useSelector(state => state.recipeDetails)
+  const { loading, error, recipe } = recipeDetails
 
   const classes = useStyles()
 
   useEffect(() => {
-      dispatch(listRecipeDetails(match.params.id))
+    dispatch(listRecipeDetails(match.params.id))
   }, [dispatch, match])
 
   return (
@@ -67,134 +68,134 @@ const {loading, error, recipe} = recipeDetails
     <ThemeProvider theme={theme}>
       <>
         {loading ? <Loader /> : error ? <Message severity="error" message={error} /> : (
-        <Container maxWidth="lg" className={classes.root}>
-          <Box
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-              width: "100%",
-              marginBottom: "1rem"
-            }}
-          >
-          <Hidden xsDown>
-          <CardMedia
-              component="img"
-              src={recipe.image}
-              title={recipe.title}
-              alt={recipe.title}
+          <Container maxWidth="lg" className={classes.root}>
+            <Box
               style={{
-                height: "100px",
-                width: "100px",
-                borderRadius: "50%"
-              }}
-            />
-            </Hidden>
-            <Typography
-              variant="h1"
-              component="div"
-              color="primary"
-              style={{
-                fontFamily: "Righteous",
-                padding: "2rem",
-                textAlign: "center"
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                width: "100%",
+                marginBottom: "1rem"
               }}
             >
-              {recipe.title}
-            </Typography>
-            <Hidden xsDown>
-            <Link
-              to="/recipes"
-              style={{
-                textDecoration: "none"
-              }}>
-              <Fab
-                variant="extended"
-                color="secondary"
-              >
-                <ArrowBackIosIcon />
-                Back
-            </Fab>
-            </Link>
-            </Hidden>
-          </Box>
-          <Hidden smUp>
-            <Link
-              to="/recipes"
-              style={{
-                textDecoration: "none",
-                paddingBottom: "1rem"
-              }}>
-              <Fab
-                variant="extended"
-                color="secondary"
-              >
-                <ArrowBackIosIcon />
-                Back
-            </Fab>
-            </Link>
-            </Hidden>
-          <Box
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              width: "100%",
-              marginBottom: "1rem"
-            }}
-          >
-            <Typography
-              variant="h5"
-              component="div"
-              color="secondary"
-            >
-              Level: {recipe.level}
-            </Typography>
-            <Typography
-              variant="h5"
-              component="div"
-              color="secondary"
-            >
-              Prep Time: {recipe.prepTime}
-            </Typography>
-            <Typography
-              variant="h5"
-              component="div"
-              color="secondary"
-            >
-              Cook Time: {recipe.cookTime}
-            </Typography>
-          </Box>
-          <Card>
-            <CardContent>
-            <Box>
-           
+              <Hidden xsDown>
+                <CardMedia
+                  component="img"
+                  src={recipe.image}
+                  title={recipe.title}
+                  alt={recipe.title}
+                  style={{
+                    height: "100px",
+                    width: "100px",
+                    borderRadius: "50%"
+                  }}
+                />
+              </Hidden>
               <Typography
-                variant="h4"
-                color="secondary"
+                variant="h1"
+                component="div"
+                color="primary"
+                style={{
+                  fontFamily: "Righteous",
+                  padding: "2rem",
+                  textAlign: "center"
+                }}
               >
-                Ingredients
-             
+                {recipe.title}
               </Typography>
-              {recipe.ingredients && recipe.ingredients.map((ingredient) =>  <Ingredient key={ingredient._id} ingredient={ingredient} />
-              )}
+              <Hidden xsDown>
+                <Link
+                  to="/recipes"
+                  style={{
+                    textDecoration: "none"
+                  }}>
+                  <Fab
+                    variant="extended"
+                    color="secondary"
+                  >
+                    <ArrowBackIosIcon />
+                    Back
+                  </Fab>
+                </Link>
+              </Hidden>
             </Box>
-
+            <Hidden smUp>
+              <Link
+                to="/recipes"
+                style={{
+                  textDecoration: "none",
+                  paddingBottom: "1rem"
+                }}>
+                <Fab
+                  variant="extended"
+                  color="secondary"
+                >
+                  <ArrowBackIosIcon />
+                  Back
+                </Fab>
+              </Link>
+            </Hidden>
+            <Box
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                width: "100%",
+                marginBottom: "1rem"
+              }}
+            >
               <Typography
-                variant="h4"
+                variant="h5"
+                component="div"
                 color="secondary"
               >
-                Directions
-            </Typography>
-              <Typography
-                variant="h6"
-                color="secondary"
-              >
-                <strong>{recipe.directions}</strong>
+                Level: {recipe.level}
               </Typography>
-            </CardContent>
-          </Card>
-         
-        </Container>
+              <Typography
+                variant="h5"
+                component="div"
+                color="secondary"
+              >
+                Prep Time: {recipe.prepTime}
+              </Typography>
+              <Typography
+                variant="h5"
+                component="div"
+                color="secondary"
+              >
+                Cook Time: {recipe.cookTime}
+              </Typography>
+            </Box>
+            <Card>
+              <CardContent>
+                <Box>
+
+                  <Typography
+                    variant="h4"
+                    color="secondary"
+                  >
+                    Ingredients
+
+                  </Typography>
+                  {recipe.ingredients && recipe.ingredients.map((ingredient) => <Ingredient key={ingredient._id} ingredient={ingredient} />
+                  )}
+                </Box>
+
+                <Typography
+                  variant="h4"
+                  color="secondary"
+                >
+                  Directions
+                </Typography>
+                <Typography
+                  variant="h6"
+                  color="secondary"
+                >
+                  <strong>{recipe.directions}</strong>
+                </Typography>
+              </CardContent>
+            </Card>
+
+          </Container>
         )}
       </>
     </ThemeProvider>

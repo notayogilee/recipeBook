@@ -1,23 +1,18 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { listRecipes } from '../actions/recipeActions'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import {
-  Card,
-  CardHeader,
   Typography,
   Grid,
-  Container,
-  CardMedia,
-  CardContent,
-  CardActions,
-  IconButton,
+  Container
 } from '@material-ui/core'
-import { Favorite, ExpandMore } from '@material-ui/icons';
+
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Header from '../components/Header'
+import RecipeItem from '../components/RecipeItem'
 
 const theme = createMuiTheme({
   palette: {
@@ -101,45 +96,8 @@ const HomeScreen = () => {
               : <Container maxWidth="lg" className={classes.root}>
                 <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
                   {recipes.map((recipe) => (
-                    <Grid item xs={8} md={6} lg={4} key={recipe._id}>
-                      <Card className={classes.card} elevation={4}>
-                        <CardHeader
-                          title={recipe.title}
-                        />
-                        <CardMedia
-                          className={classes.media}
-                          component="img"
-                          src={recipe.image}
-                        />
-                        <CardContent>
-                          <Typography>
-                            {recipe.description}
-                          </Typography>
-                        </CardContent>
-                        <CardActions
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            position: 'absolute',
-                            bottom: '0',
-                            width: '100%'
-                          }}>
-                          <IconButton>
-                            <Favorite />
-                          </IconButton>
-                          <Link to={`/recipe/${recipe._id}`}>
-                            <IconButton>
-                              <ExpandMore
-                                color="secondary"
-                                fontSize="large"
-                              />
-                            </IconButton>
-                          </Link>
-                        </CardActions>
-                      </Card>
-                    </Grid>
+                    <RecipeItem key={recipe._id} recipe={recipe} />
                   ))}
-
                 </Grid>
               </Container>
           }
