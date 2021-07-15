@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { ThemeProvider } from '@material-ui/styles'
+import theme from './utils/Theme'
 import LandingScreen from './screens/LandingScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
@@ -10,16 +12,18 @@ import MyRecipesScreen from './screens/MyRecipesScreen'
 const App = () => {
 
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={LandingScreen} />
-        <Route path="/register" component={RegisterScreen} />
-        <Route path="/login" component={LoginScreen} />
-        <Route path="/recipes" component={PublicRecipesScreen} />
-        <Route path="/recipe/:id" component={RecipeDetailsScreen} />
-        <Route path="/myRecipes" component={MyRecipesScreen} />
-      </Switch>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={LandingScreen} />
+          <Route path="/register" component={RegisterScreen} />
+          <Route path="/login" component={LoginScreen} />
+          <Route path="/recipes" component={PublicRecipesScreen} />
+          <Route path="/recipe/:id" component={RecipeDetailsScreen} />
+          <Route path="/myRecipes" component={MyRecipesScreen} />
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
 }
 

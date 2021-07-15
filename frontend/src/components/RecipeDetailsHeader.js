@@ -1,11 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider
-} from '@material-ui/core/styles'
-import {
   Fab,
   Box,
   Typography,

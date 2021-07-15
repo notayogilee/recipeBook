@@ -12,27 +12,18 @@ const RecipeDetailsBody = ({ ingredients, directions }) => {
     <Card>
       <CardContent>
         <Box>
-          <Typography
-            variant="h4"
-            color="secondary"
-          >
+          <Typography variant="h4" color="secondary" >
             Ingredients
-
           </Typography>
-          {ingredients && ingredients.map((ingredient) => <Ingredient key={ingredient._id} ingredient={ingredient} />
-          )}
+          {ingredients && ingredients.map((ingredient) => (
+            <Ingredient key={ingredient._id} ingredient={ingredient} />
+          ))}
         </Box>
 
-        <Typography
-          variant="h4"
-          color="secondary"
-        >
+        <Typography variant="h4" color="secondary" >
           Directions
         </Typography>
-        <Typography
-          variant="h6"
-          color="secondary"
-        >
+        <Typography variant="h6" color="secondary" >
           <strong>{directions}</strong>
         </Typography>
       </CardContent>

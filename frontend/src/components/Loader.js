@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   spinner: {
     margin: "auto",
     display: "block",
-    color: "#8d6e63"
+    color: theme.palette.secondary.main
   }
 }))
 
