@@ -91,6 +91,9 @@ const Header = () => {
               </Typography>
 
               <Box>
+                <Link to="/addRecipe">
+                  <Button>Add Recipe</Button>
+                </Link>
                 <Link to="/recipes">
                   <Button>Recipes</Button>
                 </Link>

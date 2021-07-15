@@ -77,7 +77,7 @@ router.post('/', protect, async (req, res) => {
 
     const user = await User.findById(req.user._id)
 
-    user.recipes = [...user.recipes, recipe]
+    user.recipes = [...user.recipes, recipe._id]
 
     await user.save()
 

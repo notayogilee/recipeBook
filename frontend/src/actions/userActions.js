@@ -112,7 +112,6 @@ export const userListRecipes = () => async (dispatch, getState) => {
     dispatch({ type: USER_RECIPE_LIST_REQUEST })
 
     const { data } = await axios.get('/api/users/myRecipes', config)
-    console.log(data)
     dispatch({
       type: USER_RECIPE_LIST_SUCCESS,
       payload: data

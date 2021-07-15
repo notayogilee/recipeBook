@@ -19,11 +19,25 @@ const importData = async () => {
 
     const createdUsers = await User.insertMany(users)
 
-    const sampleRecipes = recipes.map((recipe, index) => {
-      return { ...recipe, user: createdUsers[index]._id }
+    const sampleRecipes = await recipes.map((recipe, index) => {
+      const userId = createdUsers[index]._id
+      return { ...recipe, user: userId }
     })
 
-    await Recipe.insertMany(sampleRecipes)
+    const createdRecipes = await Recipe.insertMany(sampleRecipes)
+
+    // Add user created recipe to user recipes array
+    const updatedUsers = await createdRecipes.map((recipe, index) => {
+
+      const id = recipe._id
+      const user = createdUsers[index]
+      user.recipes = [...user.recipes, id]
+      return user
+    }
+    )
+
+    await User.deleteMany()
+    await User.insertMany(updatedUsers)
 
     console.log(chalk.green.inverse('Data Imported!'))
     process.exit()

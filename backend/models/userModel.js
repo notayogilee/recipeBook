@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Recipe = require('./recipeModel')
 
 const userSchema = mongoose.Schema({
   firstName: {
@@ -20,60 +21,8 @@ const userSchema = mongoose.Schema({
   },
   recipes: [
     {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
-      },
-      title: {
-        type: String,
-        required: true
-      },
-      description: {
-        type: String,
-        required: true
-      },
-      level: {
-        type: String,
-        required: true,
-        default: 'beginner'
-      },
-      imperialUnits: {
-        type: Boolean,
-        required: true,
-        default: true
-      },
-      prepTime: {
-        type: String,
-        required: true
-      },
-      cookTime: {
-        type: String,
-        required: true
-      },
-      isPrivate: {
-        type: String,
-        required: true,
-        default: false
-      },
-      ingredients: [
-        {
-          ingredient: { type: String, required: true },
-          amount: { type: Number, required: true },
-          unitOfMeasurement: { type: String, required: true },
-          note: { type: String }
-        }
-      ],
-      directions: {
-        type: String,
-        required: true
-      },
-      image: {
-        type: String
-      },
-      tips: {
-        type: String
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Recipe'
     }
   ]
 })
@@ -91,6 +40,4 @@ userSchema.statics.findRecipeInUsersRecipesAndRemove = async (recipeId) => {
   })
 }
 
-const User = mongoose.model('User', userSchema)
-
-module.exports = User
+module.exports = mongoose.model('User', userSchema)

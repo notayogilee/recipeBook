@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const User = require('./userModel')
 
 const reviewSchema = mongoose.Schema({
   firstName: { type: String, required: true },
@@ -80,6 +81,5 @@ const recipeSchema = mongoose.Schema({
   }
 })
 
-const Recipe = mongoose.model('Recipe', recipeSchema)
 
-module.exports = Recipe
+module.exports = mongoose.model('Recipe', recipeSchema)
