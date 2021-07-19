@@ -1,13 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import {
-  Fab,
   Box,
   Typography,
   CardMedia,
   Hidden
 } from '@material-ui/core'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const RecipeDetailsHeader = ({ title, level, prepTime, cookTime, image }) => {
   return (
@@ -46,38 +43,7 @@ const RecipeDetailsHeader = ({ title, level, prepTime, cookTime, image }) => {
         >
           {title}
         </Typography>
-        <Hidden xsDown>
-          <Link
-            to="/recipes"
-            style={{
-              textDecoration: "none"
-            }}>
-            <Fab
-              variant="extended"
-              color="secondary"
-            >
-              <ArrowBackIosIcon />
-              Back
-            </Fab>
-          </Link>
-        </Hidden>
       </Box>
-      <Hidden smUp>
-        <Link
-          to="/recipes"
-          style={{
-            textDecoration: "none",
-            paddingBottom: "1rem"
-          }}>
-          <Fab
-            variant="extended"
-            color="secondary"
-          >
-            <ArrowBackIosIcon />
-            Back
-          </Fab>
-        </Link>
-      </Hidden>
       <Box
         style={{
           display: "flex",

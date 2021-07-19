@@ -9,6 +9,7 @@ import { Container } from '@material-ui/core'
 import { listRecipeDetails } from '../actions/recipeActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Header from '../components/Header'
 import RecipeDetailsHeader from '../components/RecipeDetailsHeader'
 import RecipeDetailsBody from '../components/RecipeDetailsBody'
 
@@ -54,6 +55,7 @@ const RecipeDetailsScreen = ({ match, history }) => {
       <>
         {loading ? <Loader /> : error ? <Message severity="error" message={error} /> : (
           <Container maxWidth="lg" className={classes.root}>
+            <Header />
             <RecipeDetailsHeader
               title={title}
               level={level}

@@ -11,7 +11,7 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { Favorite, ExpandMore } from '@material-ui/icons';
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
 
 const theme = createMuiTheme({
   palette: {
