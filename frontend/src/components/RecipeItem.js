@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import theme from '../utils/Theme'
 import {
   Card,
   CardHeader,
@@ -10,31 +11,13 @@ import {
   CardActions,
   IconButton,
 } from '@material-ui/core'
-import { Favorite, ExpandMore } from '@material-ui/icons';
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#ffdd71',
-      main: '#ffab40',
-      dark: '#c77c02',
-      contrastText: '#000',
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#8d6e63',
-      dark: '#5f4339',
-      contrastText: '#fff',
-    }
-  }
-})
+import { Favorite, FavoriteBorder, ExpandMore } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
-    background: '#FCFFDB',
     paddingBottom: '4rem',
     width: '100%',
     height: '100vh',
@@ -54,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeItem = ({ recipe }) => {
+const RecipeItem = ({ recipe, myRecipe }) => {
   const classes = useStyles()
   return (
     <Grid item xs={8} md={6} lg={4} key={recipe._id}>
@@ -81,7 +64,7 @@ const RecipeItem = ({ recipe }) => {
             width: '100%'
           }}>
           <IconButton>
-            <Favorite />
+            {myRecipe ? <Favorite /> : <FavoriteBorder />}
           </IconButton>
           <Link to={`/recipe/${recipe._id}`}>
             <IconButton>

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { listRecipes } from '../actions/recipeActions'
 import { Redirect } from 'react-router-dom'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import theme from '../utils/Theme'
 import {
   Typography,
   Grid,
@@ -14,28 +15,11 @@ import Message from '../components/Message'
 import Header from '../components/Header'
 import RecipeItem from '../components/RecipeItem'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#ffdd71',
-      main: '#ffab40',
-      dark: '#c77c02',
-      contrastText: '#000',
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#8d6e63',
-      dark: '#5f4339',
-      contrastText: '#fff',
-    }
-  }
-})
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
-    background: '#FCFFDB',
+    background: theme.palette.tertiary.main,
     paddingBottom: '4rem',
     width: '100%',
     height: '100vh',
@@ -94,9 +78,13 @@ const PublicRecipesScreen = () => {
             : error
               ? <Message severity="error" message={error} />
               : <Container maxWidth="lg" className={classes.root}>
-                <Grid container spacing={4} style={{ justifyContent: "center", backgroundColor: "#FCFFDB" }}>
+                <Grid container spacing={4} style={{ justifyContent: "center" }}>
                   {recipes.map((recipe) => (
-                    <RecipeItem key={recipe._id} recipe={recipe} />
+                    <RecipeItem
+                      key={recipe._id}
+                      recipe={recipe}
+                      myRecipe={JSON.parse(isLoggedIn).user.recipes.includes(recipe._id)}
+                    />
                   ))}
                 </Grid>
               </Container>
