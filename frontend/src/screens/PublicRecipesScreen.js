@@ -42,13 +42,12 @@ const PublicRecipesScreen = () => {
   const dispatch = useDispatch()
   const recipeList = useSelector(state => state.recipeList)
   const { loading, error, recipes } = recipeList
-
+  console.log(recipes)
   const classes = useStyles()
 
   const isLoggedIn = JSON.parse(localStorage.getItem('userInfo'))
 
   useEffect(() => {
-
     dispatch(listRecipes())
   }, [dispatch])
 
@@ -80,7 +79,7 @@ const PublicRecipesScreen = () => {
               ? <Message severity="error" message={error} />
               : <Container maxWidth="lg" className={classes.root}>
                 <Grid container spacing={4} style={{ justifyContent: "center" }}>
-                  {recipes.map((recipe) => (
+                  {recipes && recipes.map((recipe) => (
                     <RecipeItem
                       key={recipe._id}
                       recipe={recipe}

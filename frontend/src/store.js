@@ -7,23 +7,23 @@ import {
 } from './reducers/recipeReducers'
 import {
   userLoginReducer,
-  userRegisterReducer,
-  userRecipeListReducer,
-  userRecipeRemoveReducer
+  userRegisterReducer
 } from './reducers/userReducers'
+import { myRecipeListReducer } from './reducers/myRecipesReducers'
 
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userLogin: userLoginReducer,
   recipeList: recipeListReducer,
   recipeDetails: recipeDetailsReducer,
-  myRecipes: userRecipeListReducer,
-  removeRecipe: userRecipeRemoveReducer
+  myRecipes: myRecipeListReducer
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
 
-const initialState = { userLogin: { userInfo: userInfoFromStorage } }
+const userRecipesFromStorage = localStorage.getItem('myRecipes') ? JSON.parse(localStorage.getItem('myRecipes')) : []
+
+const initialState = { userLogin: { userInfo: userInfoFromStorage }, userRecipes: { userRecipesFromStorage } }
 
 const middleware = [thunk]
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { userListRemoveRecipe, userListAddRecipe } from '../actions/userActions'
+import { useDispatch, useSelector } from 'react-redux'
+import { myRecipeList, myRecipeListRemoveRecipe, myRecipeListAddRecipe } from '../actions/myRecipesActions'
 import theme from '../utils/Theme'
 import {
   Card,
@@ -43,19 +43,21 @@ const RecipeItem = ({ recipe, userRecipe }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
+  // console.log(recipe)
+
   const [myRecipe, setMyRecipe] = useState(false)
 
   useEffect(() => {
     setMyRecipe(userRecipe)
-  }, [setMyRecipe, userRecipe])
+  }, [setMyRecipe])
 
   const myRecipeRemoveHandler = (id) => {
-    dispatch(userListRemoveRecipe(id))
+    dispatch(myRecipeListRemoveRecipe(id))
     setMyRecipe(false)
   }
 
   const myRecipeAddHandler = (id) => {
-    dispatch(userListAddRecipe(id))
+    dispatch(myRecipeListAddRecipe(id))
     setMyRecipe(true)
   }
   return (

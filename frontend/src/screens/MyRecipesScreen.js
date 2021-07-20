@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { userListRecipes } from '../actions/userActions'
+import { myRecipeList } from '../actions/myRecipesActions'
 import { Redirect } from 'react-router-dom'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import theme from '../utils/Theme'
@@ -40,12 +40,13 @@ const useStyles = makeStyles((theme) => ({
 const MyRecipesScreen = () => {
   const dispatch = useDispatch()
   const myRecipes = useSelector(state => state.myRecipes)
+  // const recipes = useSelector(state => state.userRecipes)
   const { loading, error, recipes } = myRecipes
 
   const classes = useStyles()
 
   useEffect(() => {
-    dispatch(userListRecipes())
+    dispatch(myRecipeList())
   }, [dispatch])
 
   const isLoggedIn = JSON.parse(localStorage.getItem('userInfo'))
@@ -53,7 +54,7 @@ const MyRecipesScreen = () => {
   if (!isLoggedIn) {
     return <Redirect to="/login" />
   }
-
+  console.log(recipes)
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -78,12 +79,12 @@ const MyRecipesScreen = () => {
               ? <Message severity="error" message={error} />
               : <Container maxWidth="lg" className={classes.root}>
                 <Grid container spacing={4} style={{ justifyContent: "center" }}>
-                  {recipes.length === 0 ? (
+                  {recipes && recipes.length === 0 ? (
                     <Typography variant="h3">
                       You currently don't have any recipes
                     </Typography>
                   ) : (
-                    recipes.map((recipe) => (
+                    recipes && recipes.map((recipe) => (
                       <RecipeItem
                         key={recipe._id}
                         recipe={recipe}
