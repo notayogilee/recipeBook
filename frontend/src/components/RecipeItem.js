@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { userListRemoveRecipe, userListAddRecipe } from '../actions/userActions'
 import theme from '../utils/Theme'
 import {
   Card,
@@ -37,8 +39,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeItem = ({ recipe, myRecipe }) => {
+const RecipeItem = ({ recipe, userRecipe }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  const [myRecipe, setMyRecipe] = useState(false)
+
+  useEffect(() => {
+    setMyRecipe(userRecipe)
+  }, [setMyRecipe, userRecipe])
+
+  const myRecipeRemoveHandler = (id) => {
+    dispatch(userListRemoveRecipe(id))
+    setMyRecipe(false)
+  }
+
+  const myRecipeAddHandler = (id) => {
+    dispatch(userListAddRecipe(id))
+    setMyRecipe(true)
+  }
   return (
     <Grid item xs={8} md={6} lg={4} key={recipe._id}>
       <Card className={classes.card} elevation={4}>
@@ -63,7 +82,12 @@ const RecipeItem = ({ recipe, myRecipe }) => {
             bottom: '0',
             width: '100%'
           }}>
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              myRecipe ? myRecipeRemoveHandler(recipe._id) : myRecipeAddHandler(recipe._id)
+            }
+            }
+          >
             {myRecipe ? <Favorite /> : <FavoriteBorder />}
           </IconButton>
           <Link to={`/recipe/${recipe._id}`}>

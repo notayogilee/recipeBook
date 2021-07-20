@@ -48,7 +48,7 @@ const MyRecipesScreen = () => {
     dispatch(userListRecipes())
   }, [dispatch])
 
-  const isLoggedIn = localStorage.getItem('userInfo')
+  const isLoggedIn = JSON.parse(localStorage.getItem('userInfo'))
 
   if (!isLoggedIn) {
     return <Redirect to="/login" />
@@ -87,7 +87,7 @@ const MyRecipesScreen = () => {
                       <RecipeItem
                         key={recipe._id}
                         recipe={recipe}
-                        myRecipe={JSON.parse(isLoggedIn).user.recipes.includes(recipe._id)}
+                        userRecipe={isLoggedIn.user.recipes.includes(recipe._id)}
                       />
                     )))}
                 </Grid>

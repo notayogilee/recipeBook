@@ -54,7 +54,9 @@ router.post('/login', async (req, res) => {
   const user = await User.findOne({ email }).select('-password')
 
   const id = user._id
-  const token = jwt.sign({ id }, process.env.JWT_SECRET)
+  const token = jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d'
+  })
 
   res.json({ user, token })
 })
@@ -112,16 +114,11 @@ router.get('/myRecipes', protect, async (req, res) => {
 router.put('/myRecipes', protect, async (req, res) => {
   const user = await User.findById(req.user._id)
 
-  const recipeExists = user.recipes.find((recipe) => recipe._id.toString() === req.body._id)
+  const recipe = await Recipe.findById(req.body.id)
 
-  if (recipeExists) {
-    return res.status(401).send('You already have this recipe in your recipes')
-  }
-  const recipe = await Recipe.findById(req.body._id)
-
-  user.recipes = [...user.recipes, recipe]
+  user.recipes = [...user.recipes, recipe._id]
   await user.save()
-  res.send(`Recipe ${recipe.title} was added to your recipes`)
+  res.send(user)
 })
 
 // router PUT /api/users/myRecipes/:id
@@ -160,16 +157,23 @@ router.put('/myRecipes/:id', protect, async (req, res) => {
 // @desc Remove a recipe from users recipes
 // @access Private
 router.delete('/myRecipes/:id', protect, async (req, res) => {
-  const user = await User.findById(req.user._id)
-  const index = user.recipes.findIndex((recipe) => recipe._id.toString() === req.params.id)
 
-  if (index !== -1) {
-    user.recipes.splice(index, 1)
-    user.save()
-    return res.send('Recipe deleted')
+  const user = await User.findById(req.user._id)
+  const index = user.recipes.findIndex((recipe) => recipe.toString() === req.params.id)
+
+  try {
+    if (index !== -1) {
+      user.recipes.splice(index, 1)
+      user.save()
+      return res.send(user.recipes)
+    }
+
+    res.status(404).send('Recipe not found')
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error)
   }
 
-  res.status(404).send('Recipe not found')
 })
 
 // @route DELETE /api/users/:id

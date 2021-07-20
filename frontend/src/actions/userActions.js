@@ -10,6 +10,12 @@ import {
   USER_RECIPE_LIST_REQUEST,
   USER_RECIPE_LIST_SUCCESS,
   USER_RECIPE_LIST_FAIL,
+  USER_RECIPE_REMOVE_REQUEST,
+  USER_RECIPE_REMOVE_SUCCESS,
+  USER_RECIPE_REMOVE_FAIL,
+  USER_RECIPE_ADD_REQUEST,
+  USER_RECIPE_ADD_SUCCESS,
+  USER_RECIPE_ADD_FAIL
 } from '../constants/userContants'
 
 export const register = (firstName, lastName, email, password) => async (dispatch) => {
@@ -120,6 +126,91 @@ export const userListRecipes = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_RECIPE_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    })
+  }
+}
+
+export const userListRemoveRecipe = (id) => async (dispatch, getState) => {
+  try {
+    let userInfo = {}
+    const { userLogin, userRegister } = getState()
+    const localStorageUser = JSON.parse(localStorage.getItem('userInfo'))
+
+    if (!userLogin.userInfo) {
+      userInfo = userRegister.userInfo
+    } else {
+      userInfo = userLogin.userInfo
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+
+    dispatch({ type: USER_RECIPE_REMOVE_REQUEST })
+
+    const { data } = await axios.delete(`/api/users/myRecipes/${id}`, config)
+
+    dispatch({
+      type: USER_RECIPE_REMOVE_SUCCESS,
+      payload: data
+    })
+
+    localStorageUser.user.recipes = data
+    localStorage.setItem('userInfo', JSON.stringify(localStorageUser))
+
+  } catch (error) {
+    dispatch({
+      type: USER_RECIPE_REMOVE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+    })
+  }
+}
+
+export const userListAddRecipe = (id) => async (dispatch, getState) => {
+  try {
+    let userInfo = {}
+    const { userLogin, userRegister } = getState()
+    const localStorageUser = JSON.parse(localStorage.getItem('userInfo'))
+
+    if (!userLogin.userInfo) {
+      userInfo = userRegister.userInfo
+    } else {
+      userInfo = userLogin.userInfo
+    }
+
+    const config = {
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`
+      },
+      id
+    }
+
+    dispatch({ type: USER_RECIPE_ADD_REQUEST })
+
+    const { data } = await axios.put(`/api/users/myRecipes`, { id }, config)
+
+    dispatch({
+      type: USER_RECIPE_ADD_SUCCESS,
+      payload: data.recipes
+    })
+
+    localStorageUser.user.recipes = data.recipes
+    localStorage.setItem('userInfo', JSON.stringify(localStorageUser))
+
+  } catch (error) {
+    dispatch({
+      type: USER_RECIPE_ADD_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

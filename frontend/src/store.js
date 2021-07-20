@@ -8,7 +8,8 @@ import {
 import {
   userLoginReducer,
   userRegisterReducer,
-  userRecipeListReducer
+  userRecipeListReducer,
+  userRecipeRemoveReducer
 } from './reducers/userReducers'
 
 const reducer = combineReducers({
@@ -16,7 +17,8 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   recipeList: recipeListReducer,
   recipeDetails: recipeDetailsReducer,
-  myRecipes: userRecipeListReducer
+  myRecipes: userRecipeListReducer,
+  removeRecipe: userRecipeRemoveReducer
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
